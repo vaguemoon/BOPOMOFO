@@ -18,7 +18,7 @@ const STORAGE_STUDENT_KEY = "bopomofo_student_v2";
 const STORAGE_THEME_KEY = "bopomofo_theme_v1";
 
 // ===== 後端端點（請替換成你的 Apps Script URL） =====
-const RESULT_ENDPOINT = ""; // 例如：https://script.google.com/macros/s/XXXX/exec
+const RESULT_ENDPOINT = "https://script.google.com/macros/library/d/1zH-nvUYb6zg9fG7D2zmraSppJytvZWU8bGytAbFCmOkHbbLS4Bc15d68/1"; // 例如：https://script.google.com/macros/s/XXXX/exec
 
 // ===== 注音符號（MVP 先不含聲調） =====
 const BOPOMOFO = [
