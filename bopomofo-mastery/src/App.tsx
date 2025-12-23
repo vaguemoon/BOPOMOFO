@@ -11,7 +11,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
  */
 
 // ===== 你要改的只有這個（你的 Apps Script URL）=====
-const RESULT_ENDPOINT = ""; // 例如：https://script.google.com/macros/s/XXXX/exec
+const RESULT_ENDPOINT = "https://script.google.com/macros/s/AKfycbwAhvscFQQ89eNoJylp0YSDE1quZOyTp3xw0c_GHT9eERfmT4oudba7Mur7qvyTjYgiGg/exec";
 
 // ===== localStorage keys =====
 const STORAGE_STATS_KEY = "bopomofo_stats_v3";
