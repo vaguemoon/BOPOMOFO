@@ -56,7 +56,7 @@ async function postResult(payload: any) {
   try {
     const res = await fetch(RESULT_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
     });
     return { ok: res.ok, status: res.status };
