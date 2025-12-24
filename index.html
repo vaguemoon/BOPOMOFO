@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>注音符號單音｜精熟練習</title>
+  <style>
+    :root{
+      --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --sub:#475569; --border:#e2e8f0;
+      --soft:#f1f5f9; --btn:#0f172a; --btnText:#fff; --ghostBg:#fff; --ghostText:#0f172a; --ghostBorder:#e2e8f0;
+      --ok:#10b981; --bad:#ef4444;
+    }
+    [data-theme="dark"]{
+      --bg:#020617; --card:#0f172a; --text:#f8fafc; --sub:#cbd5e1; --border:#334155;
+      --soft:#1e293b; --btn:#34d399; --btnText:#020617; --ghostBg:#0f172a; --ghostText:#f8fafc; --ghostBorder:#334155;
+      --ok:#34d399; --bad:#fb7185;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC","Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .space{height:12px}
+    .title{font-size:22px;font-weight:900;letter-spacing:-0.02em}
+    .subtitle{color:var(--sub);font-weight:700;font-size:14px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+    .btn{border:0;border-radius:18px;padding:12px 16px;font-weight:900;font-size:16px;cursor:pointer}
+    .btnPrimary{background:var(--btn);color:var(--btnText)}
+    .btnGhost{background:var(--ghostBg);color:var(--ghostText);border:1px solid var(--ghostBorder)}
+    .btn:active{transform:scale(.99)}
+    .tabs .btn{min-width:96px}
+    .pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--soft);padding:8px 12px;font-weight:900;font-size:13px}
+    .grid2{display:grid;grid-template-columns:1fr;gap:12px}
+    @media(min-width:980px){.grid2{grid-template-columns:1fr 1fr}}
+    .symGrid{display:flex;flex-wrap:wrap;gap:8px}
+    .symBtn{border-radius:16px;border:1px solid var(--border);background:var(--card);padding:10px 14px;font-size:20px;font-weight:900;cursor:pointer}
+    .symBtn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+    [data-theme="dark"] .symBtn.on{background:var(--ok);color:#020617;border-color:var(--ok)}
+    .bigSym{font-size:72px;font-weight:1000;letter-spacing:0.02em}
+    .hint{color:var(--sub);font-weight:800;font-size:12px}
+    .canvasBox{display:flex;flex-direction:column;align-items:center;gap:10px}
+    canvas{border-radius:18px;border:1px solid var(--border);background:#fff;touch-action:none}
+    .resultBox{width:100%;max-width:360px;border-radius:18px;border:1px solid var(--border);padding:14px;background:var(--card)}
+    .resultTitle{font-size:12px;font-weight:1000;color:var(--sub)}
+    .resultText{margin-top:10px;font-size:28px;font-weight:1000}
+    .ok{color:var(--ok)} .bad{color:var(--bad)}
+    .qOpts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(min-width:640px){.qOpts{grid-template-columns:repeat(4,1fr)}}
+    .opt{border-radius:18px;border:1px solid var(--border);background:var(--card);padding:18px 10px;font-size:46px;font-weight:1000;cursor:pointer}
+    .opt.dim{opacity:.6}
+    .opt.ok{border-color:var(--ok);background:color-mix(in srgb, var(--ok) 12%, var(--card))}
+    .opt.bad{border-color:var(--bad);background:color-mix(in srgb, var(--bad) 10%, var(--card))}
+    .banner{border-radius:18px;border:1px solid var(--border);padding:14px;background:var(--soft);font-weight:900}
+    .muted{color:var(--sub);font-weight:800}
+    input{width:100%;border-radius:14px;border:1px solid var(--border);padding:12px 12px;font-size:16px;font-weight:900;background:var(--bg);color:var(--text);outline:none}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row" style="justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="title">注音符號單音｜精熟練習</div>
+      <div class="subtitle">畫面精簡、提示顯著、孩子可獨立操作（GitHub Pages 版）</div>
+    </div>
+    <div class="row" style="align-items:center">
+      <button id="themeBtn" class="btn btnGhost">🌙 暗色</button>
+    </div>
+  </div>
+
+  <div class="space"></div>
+
+  <div class="row tabs">
+    <button class="btn btnPrimary" id="tabLearn">學習</button>
+    <button class="btn btnGhost" id="tabQuiz">測驗</button>
+    <button class="btn btnGhost" id="tabTeacher">教師</button>
+  </div>
+
+  <div class="space"></div>
+
+  <div class="card">
+    <div style="font-weight:1000">學生資料</div>
+    <div class="hint">座號/代號必填（方便回傳老師）</div>
+    <div class="space"></div>
+    <div class="row">
+      <div style="flex:1;min-width:220px">
+        <div class="hint">座號/代號（必填）</div>
+        <input id="studentId" placeholder="例如：A03" maxlength="12" />
+      </div>
+      <div style="flex:1;min-width:220px">
+        <div class="hint">姓名（可不填）</div>
+        <input id="studentName" placeholder="例如：小明" maxlength="20" />
+      </div>
+    </div>
+    <div class="hint" style="margin-top:8px">※ 本機會記住這份輸入</div>
+  </div>
+
+  <div class="space"></div>
+
+  <!-- LEARN -->
+  <section id="pageLearn" class="grid2">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div>
+          <div style="font-weight:1000">學習：聽 + 看 + 描</div>
+          <div class="hint">先按發音，再描寫</div>
+        </div>
+        <button id="btnSpeakLearn" class="btn btnPrimary">發音 ▶</button>
+      </div>
+
+      <div class="space"></div>
+      <div class="symGrid" id="symList"></div>
+
+      <div class="space"></div>
+      <div class="card" style="background:var(--soft)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-end">
+          <div id="bigSym" class="bigSym">ㄅ</div>
+          <div class="hint">提示：聽 2 次再描</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:1000">紅線描寫（通過/未通過）</div>
+      <div class="hint">畫完按「完成評分」</div>
+      <div class="space"></div>
+
+      <div class="canvasBox">
+        <canvas id="traceCanvas" width="320" height="320"></canvas>
+        <div class="row">
+          <button id="btnClear" class="btn btnGhost">清除重來</button>
+          <button id="btnGrade" class="btn btnPrimary">完成評分</button>
+        </div>
+        <div class="resultBox" aria-live="polite">
+          <div class="resultTitle">描寫結果</div>
+          <div id="traceResult" class="hint" style="margin-top:8px">畫完按「完成評分」。</div>
+        </div>
+        <div class="hint">用手指或滑鼠沿著淡灰色字描寫（紅線）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="pageQuiz" style="display:none">
+    <div class="grid2">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div>
+            <div style="font-weight:1000">測驗：闖關模式</div>
+            <div class="hint">每一關固定一個注音：達標 → 下一關</div>
+          </div>
+          <div class="row">
+            <button id="btnReplay" class="btn btnGhost" disabled>再聽一次 ▶</button>
+            <button id="btnStart" class="btn btnPrimary">開始闖關</button>
+            <button id="btnBackReady" class="btn btnGhost" style="display:none">回到開始</button>
+          </div>
+        </div>
+
+        <div class="space"></div>
+        <div class="banner" id="quizBanner">
+          <div style="font-size:18px">準備好了就開始</div>
+          <div class="muted" id="quizStd">本關標準：至少 10 題、正確率至少 80%</div>
+          <div class="hint" id="quizTotalLevels">共 37 關</div>
+        </div>
+
+        <div class="space"></div>
+        <div class="card" id="quizTargetCard" style="display:none">
+          <div class="row" style="align-items:center;gap:10px;flex-wrap:wrap">
+            <span class="pill" id="pillLevel">第 1 / 1 關</span>
+            <span class="pill" id="pillGoal">目標：ㄅ</span>
+            <span class="pill" id="pillDone">已做 0 題</span>
+            <span class="pill" id="pillAcc">正確率 0%</span>
+          </div>
+          <div class="space"></div>
+          <div class="bigSym" id="quizBigSym">ㄅ</div>
+          <div class="hint">按「再聽一次」或直接選</div>
+        </div>
+
+        <div class="space"></div>
+        <div class="qOpts" id="opts" style="display:none"></div>
+
+        <div class="space"></div>
+        <div class="banner" id="feedback" style="min-height:56px;display:none">先聽，再選。</div>
+
+        <div class="space"></div>
+        <div class="row" id="quizActions" style="display:none">
+          <button id="btnReplay2" class="btn btnGhost">再聽一次 ▶</button>
+          <button id="btnNext" class="btn btnPrimary">下一題 →</button>
+          <button id="btnFinishLevel" class="btn btnPrimary" style="display:none">看本關結果</button>
+        </div>
+
+        <div class="hint" id="quizHint" style="display:none">本關做滿題數後按「看本關結果」。通過就會進下一關。</div>
+
+        <div class="space"></div>
+        <div class="card" id="allClear" style="display:none">
+          <div style="font-size:22px;font-weight:1000">🎉 全部通關！</div>
+          <div class="muted" id="allClearText">你已經全部通過。</div>
+          <div class="space"></div>
+          <div class="row">
+            <button id="btnPost" class="btn btnPrimary">回傳給老師</button>
+            <button id="btnPlayAgain" class="btn btnGhost">再玩一次</button>
+          </div>
+          <div class="hint" id="postStatus" style="margin-top:8px"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight:1000">本機累積紀錄</div>
+        <div class="space"></div>
+        <div class="row">
+          <span class="pill" id="pCorrect">答對 0</span>
+          <span class="pill" id="pTotal">總題數 0</span>
+          <span class="pill" id="pAcc">正確率 0%</span>
+        </div>
+        <div class="hint" style="margin-top:10px">這份是「此裝置」累積，不是老師端統計。</div>
+        <div class="space"></div>
+        <button id="btnClearStats" class="btn btnGhost">清空本機紀錄</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEACHER -->
+  <section id="pageTeacher" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-weight:1000">教師設定（精熟標準）</div>
+          <div class="hint">設定會儲存在此裝置</div>
+        </div>
+        <div class="row">
+          <button id="btnAll" class="btn btnGhost">全選</button>
+          <button id="btnNone" class="btn btnGhost">全不選</button>
+        </div>
+      </div>
+
+      <div class="space"></div>
+      <div class="row">
+        <div style="flex:1;min-width:220px">
+          <div class="hint">題數門檻</div>
+          <input id="setRQ" type="number" min="1" max="100" />
+        </div>
+        <div style="flex:1;min-width:220px">
+          <div class="hint">正確率門檻（%）</div>
+          <input id="setRA" type="number" min="1" max="100" />
+        </div>
+      </div>
+
+      <div class="space"></div>
+      <div class="row">
+        <label class="pill"><input id="setAutoSpeak" type="checkbox" /> 每題開始自動播一次</label>
+        <label class="pill"><input id="setLock" type="checkbox" /> 選完鎖定（避免連點）</label>
+      </div>
+
+      <div class="space"></div>
+      <div class="hint" id="enabledCount">已選符號：0</div>
+      <div class="space"></div>
+      <div class="symGrid" id="teacherSym"></div>
+
+      <div class="space"></div>
+      <div class="banner">
+        結果回傳端點：<span id="epState"></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="space"></div>
+  <div class="card">
+    <div style="font-weight:1000">除錯提示（若你還是看不到畫面）</div>
+    <div class="hint" style="margin-top:6px">
+      1) 用 Chrome 開「開發者工具 → Console」看第一條紅色錯誤。<br/>
+      2) GitHub Pages 要放在 repo 根目錄的 index.html（或 docs/ 但 Pages 要對應）。<br/>
+      3) 回傳 Apps Script 若失敗，多半是 URL 不對或未部署為「任何人可存取」。<br/>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/** ====== CONFIG ====== **/
+// ✅ 這裡請貼你的 Apps Script /exec
+// 例如：https://script.google.com/macros/s/XXXXXXX/exec
+const RESULT_ENDPOINT = "";
+
+/** ====== STORAGE ====== **/
+const K_STATS="bopomofo_stats_plain_v1";
+const K_SETTINGS="bopomofo_teacher_plain_v1";
+const K_STUDENT="bopomofo_student_plain_v1";
+const K_THEME="bopomofo_theme_plain_v1";
+const K_DEV="bopomofo_device_plain_v1";
+
+/** ====== DATA ====== **/
+const BOPOMOFO = [
+ "ㄅ","ㄆ","ㄇ","ㄈ","ㄉ","ㄊ","ㄋ","ㄌ","ㄍ","ㄎ","ㄏ","ㄐ","ㄑ","ㄒ","ㄓ","ㄔ","ㄕ","ㄖ","ㄗ","ㄘ","ㄙ",
+ "ㄧ","ㄨ","ㄩ","ㄚ","ㄛ","ㄜ","ㄝ","ㄞ","ㄟ","ㄠ","ㄡ","ㄢ","ㄣ","ㄤ","ㄥ","ㄦ",
+];
+
+const DEFAULT_SETTINGS = {
+  requiredQuestions: 10,
+  requiredAccuracy: 80,
+  enabledSymbols: BOPOMOFO.slice(),
+  autoSpeakOnQuestion: true,
+  lockAfterPick: true,
+};
+
+function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+function percent(c,t){return t>0?Math.round((c/t)*100):0}
+function nowIso(){return new Date().toISOString()}
+function loadJSON(k,f){try{const r=localStorage.getItem(k);return r?JSON.parse(r):f}catch{return f}}
+function saveJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+// ✅ 修正：避免舊 iPad / 舊 Safari 因 optional chaining（?.）直接白畫面
+function getDeviceId(){
+  var v=localStorage.getItem(K_DEV);
+  if(v) return v;
+  if (window.crypto && typeof window.crypto.randomUUID === "function") v = window.crypto.randomUUID();
+  else v = "dev_" + Math.random().toString(16).slice(2);
+  localStorage.setItem(K_DEV,v);
+  return v;
+}
+
+function pickN(arr,n){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    const t=a[i]; a[i]=a[j]; a[j]=t;
+  }
+  return a.slice(0,n);
+}
+function pick4(pool,ans){
+  const set=new Set([ans]);
+  while(set.size<4) set.add(pool[Math.floor(Math.random()*pool.length)]);
+  return pickN(Array.from(set),4);
+}
+
+/** ====== THEME ====== **/
+function loadTheme(){
+  const t=localStorage.getItem(K_THEME);
+  if(t==="dark"||t==="light") return t;
+  return (window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";
+}
+function setTheme(t){
+  document.documentElement.dataset.theme=t;
+  localStorage.setItem(K_THEME,t);
+  themeBtn.textContent = (t==="dark") ? "☀️ 亮色" : "🌙 暗色";
+}
+
+/** ====== VOICE ====== **/
+let pickedVoice=null;
+function pickVoice(){
+  const synth=window.speechSynthesis;
+  if(!synth) return;
+  const voices=synth.getVoices()||[];
+  const hints=["Yating","Ya-Ting","Mei-Jia","Google 國語","Google Chinese","Microsoft"];
+  const candidates=voices
+    .filter(v=>(v.lang||"").toLowerCase().indexOf("zh")>=0)
+    .sort((a,b)=>{
+      const aTW=(a.lang||"").toLowerCase().indexOf("tw")>=0?0:1;
+      const bTW=(b.lang||"").toLowerCase().indexOf("tw")>=0?0:1;
+      if(aTW!==bTW) return aTW-bTW;
+      const as=hints.reduce((s,h)=>s+((a.name||"").indexOf(h)>=0?1:0),0);
+      const bs=hints.reduce((s,h)=>s+((b.name||"").indexOf(h)>=0?1:0),0);
+      return bs-as;
+    });
+  pickedVoice=candidates[0]||voices[0]||null;
+}
+function speak(text, kind){
+  const synth=window.speechSynthesis;
+  if(!synth) return;
+  if(!pickedVoice) pickVoice();
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="zh-TW";
+  if(pickedVoice) u.voice=pickedVoice;
+  if(kind==="coach"){u.rate=0.9;u.pitch=1.15}else{u.rate=0.85;u.pitch=1.05}
+  synth.speak(u);
+}
+function speakBopomofo(sym){speak(sym,"bopomofo")}
+function speakCoach(msg){speak(msg,"coach")}
+
+/** ====== POST RESULT ====== **/
+async function postResult(payload){
+  if(!RESULT_ENDPOINT) return {ok:false,skipped:true};
+  try{
+    const res=await fetch(RESULT_ENDPOINT,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload),
+    });
+    return {ok:res.ok,status:res.status};
+  }catch(e){return {ok:false,error:String(e)}}
+}
+
+/** ====== STATE ====== **/
+let settings=loadJSON(K_SETTINGS, DEFAULT_SETTINGS);
+settings.requiredQuestions=clamp(+settings.requiredQuestions||10,1,100);
+settings.requiredAccuracy=clamp(+settings.requiredAccuracy||80,1,100);
+settings.enabledSymbols=(Array.isArray(settings.enabledSymbols)&&settings.enabledSymbols.length)?settings.enabledSymbols.filter(x=>BOPOMOFO.indexOf(x)>=0):BOPOMOFO.slice();
+settings.autoSpeakOnQuestion=!!settings.autoSpeakOnQuestion;
+settings.lockAfterPick=!!settings.lockAfterPick;
+
+let student=loadJSON(K_STUDENT,{studentId:"",studentName:""});
+let stats=loadJSON(K_STATS,{correct:0,total:0});
+stats.correct=+stats.correct||0; stats.total=+stats.total||0;
+
+let currentSymbol="ㄅ";
+
+/** ====== ELEMENTS ====== **/
+const themeBtn=document.getElementById("themeBtn");
+const tabLearn=document.getElementById("tabLearn");
+const tabQuiz=document.getElementById("tabQuiz");
+const tabTeacher=document.getElementById("tabTeacher");
+const pageLearn=document.getElementById("pageLearn");
+const pageQuiz=document.getElementById("pageQuiz");
+const pageTeacher=document.getElementById("pageTeacher");
+
+const studentId=document.getElementById("studentId");
+const studentName=document.getElementById("studentName");
+
+const symList=document.getElementById("symList");
+const bigSym=document.getElementById("bigSym");
+const btnSpeakLearn=document.getElementById("btnSpeakLearn");
+
+const traceCanvas=document.getElementById("traceCanvas");
+const btnClear=document.getElementById("btnClear");
+const btnGrade=document.getElementById("btnGrade");
+const traceResult=document.getElementById("traceResult");
+
+/* quiz */
+const quizStd=document.getElementById("quizStd");
+const quizTotalLevels=document.getElementById("quizTotalLevels");
+const btnStart=document.getElementById("btnStart");
+const btnBackReady=document.getElementById("btnBackReady");
+const btnReplay=document.getElementById("btnReplay");
+const quizTargetCard=document.getElementById("quizTargetCard");
+const quizBigSym=document.getElementById("quizBigSym");
+const pillLevel=document.getElementById("pillLevel");
+const pillGoal=document.getElementById("pillGoal");
+const pillDone=document.getElementById("pillDone");
+const pillAcc=document.getElementById("pillAcc");
+const opts=document.getElementById("opts");
+const feedback=document.getElementById("feedback");
+const quizActions=document.getElementById("quizActions");
+const btnReplay2=document.getElementById("btnReplay2");
+const btnNext=document.getElementById("btnNext");
+const btnFinishLevel=document.getElementById("btnFinishLevel");
+const quizHint=document.getElementById("quizHint");
+const allClear=document.getElementById("allClear");
+const allClearText=document.getElementById("allClearText");
+const btnPost=document.getElementById("btnPost");
+const btnPlayAgain=document.getElementById("btnPlayAgain");
+const postStatus=document.getElementById("postStatus");
+
+/* teacher */
+const setRQ=document.getElementById("setRQ");
+const setRA=document.getElementById("setRA");
+const setAutoSpeak=document.getElementById("setAutoSpeak");
+const setLock=document.getElementById("setLock");
+const btnAll=document.getElementById("btnAll");
+const btnNone=document.getElementById("btnNone");
+const enabledCount=document.getElementById("enabledCount");
+const teacherSym=document.getElementById("teacherSym");
+const epState=document.getElementById("epState");
+
+/* stats pills */
+const pCorrect=document.getElementById("pCorrect");
+const pTotal=document.getElementById("pTotal");
+const pAcc=document.getElementById("pAcc");
+const btnClearStats=document.getElementById("btnClearStats");
+
+/** ====== TABS ====== **/
+function setTab(t){
+  pageLearn.style.display = (t==="learn")?"grid":"none";
+  pageQuiz.style.display = (t==="quiz")?"block":"none";
+  pageTeacher.style.display = (t==="teacher")?"block":"none";
+
+  tabLearn.className = "btn "+(t==="learn"?"btnPrimary":"btnGhost");
+  tabQuiz.className = "btn "+(t==="quiz"?"btnPrimary":"btnGhost");
+  tabTeacher.className = "btn "+(t==="teacher"?"btnPrimary":"btnGhost");
+}
+
+tabLearn.onclick=()=>setTab("learn");
+tabQuiz.onclick=()=>setTab("quiz");
+tabTeacher.onclick=()=>setTab("teacher");
+
+/** ====== STUDENT ====== **/
+studentId.value = student.studentId||"";
+studentName.value = student.studentName||"";
+function saveStudent(){
+  student.studentId = (studentId.value||"").replace(/\s+/g,"").slice(0,12);
+  student.studentName = (studentName.value||"").slice(0,20);
+  studentId.value = student.studentId;
+  studentName.value = student.studentName;
+  saveJSON(K_STUDENT, student);
+}
+studentId.addEventListener("input", saveStudent);
+studentName.addEventListener("input", saveStudent);
+
+/** ====== LEARN UI ====== **/
+function renderSymbolButtons(){
+  symList.innerHTML="";
+  BOPOMOFO.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="symBtn"+(s===currentSymbol?" on":"");
+    b.textContent=s;
+    b.onclick=()=>{
+      currentSymbol=s;
+      bigSym.textContent=s;
+      renderSymbolButtons();
+      resetTraceCanvas();
+    };
+    symList.appendChild(b);
+  });
+}
+btnSpeakLearn.onclick=()=>speakBopomofo(currentSymbol);
+
+/** ====== CANVAS TRACE ====== **/
+const SIZE=320;
+const ctx=traceCanvas.getContext("2d");
+let drawing=false;
+let last=null;
+
+function resetTraceCanvas(){
+  traceResult.className="hint";
+  traceResult.textContent="畫完按「完成評分」。";
+
+  ctx.clearRect(0,0,SIZE,SIZE);
+  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
+
+  ctx.strokeStyle="rgba(15,23,42,0.08)";
+  ctx.lineWidth=1;
+  for(let i=1;i<4;i++){
+    const p=SIZE*i/4;
+    ctx.beginPath(); ctx.moveTo(p,0); ctx.lineTo(p,SIZE); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,p); ctx.lineTo(SIZE,p); ctx.stroke();
+  }
+
+  ctx.fillStyle="rgba(15,23,42,0.18)";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
+  ctx.fillText(currentSymbol, SIZE/2, SIZE/2+10);
+
+  ctx.strokeStyle="rgba(15,23,42,0.12)";
+  ctx.lineWidth=2;
+  ctx.strokeRect(8,8,SIZE-16,SIZE-16);
+}
+
+function posFromEvent(e){
+  const r=traceCanvas.getBoundingClientRect();
+  const x=clamp(e.clientX-r.left,0,r.width);
+  const y=clamp(e.clientY-r.top,0,r.height);
+  return {x,y};
+}
+
+traceCanvas.addEventListener("pointerdown",(e)=>{
+  drawing=true;
+  last=posFromEvent(e);
+  traceCanvas.setPointerCapture(e.pointerId);
+});
+traceCanvas.addEventListener("pointermove",(e)=>{
+  if(!drawing) return;
+  const p=posFromEvent(e);
+  if(!last){last=p;return;}
+  ctx.strokeStyle="#ef4444";
+  ctx.lineWidth=20;
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+  ctx.beginPath();
+  ctx.moveTo(last.x,last.y);
+  ctx.lineTo(p.x,p.y);
+  ctx.stroke();
+  last=p;
+});
+function endDraw(){drawing=false; last=null;}
+traceCanvas.addEventListener("pointerup",endDraw);
+traceCanvas.addEventListener("pointercancel",endDraw);
+
+btnClear.onclick=resetTraceCanvas;
+
+function computeTracePass(){
+  const mask=document.createElement("canvas");
+  mask.width=SIZE; mask.height=SIZE;
+  const m=mask.getContext("2d");
+  m.fillStyle="#fff"; m.fillRect(0,0,SIZE,SIZE);
+  m.fillStyle="#000";
+  m.textAlign="center"; m.textBaseline="middle";
+  m.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
+  m.fillText(currentSymbol, SIZE/2, SIZE/2+10);
+  m.strokeStyle="#000";
+  m.lineWidth=34;
+  m.strokeText(currentSymbol, SIZE/2, SIZE/2+10);
+
+  const md=m.getImageData(0,0,SIZE,SIZE).data;
+  const dd=ctx.getImageData(0,0,SIZE,SIZE).data;
+
+  let targetArea=0, drawnTotal=0, hit=0, out=0;
+  for(let i=0;i<md.length;i+=4){
+    const isTarget = md[i+3]>10 && (md[i]<220 || md[i+1]<220 || md[i+2]<220);
+    if(isTarget) targetArea++;
+
+    const r=dd[i], g=dd[i+1], b=dd[i+2], a=dd[i+3];
+    const isRed = a>0 && r>150 && g<180 && b<180;
+    if(!isRed) continue;
+    drawnTotal++;
+    if(isTarget) hit++; else out++;
+  }
+
+  const coverage = targetArea? hit/targetArea : 0;
+  const outside = drawnTotal? out/drawnTotal : 0;
+  const raw = coverage*130 + 12 - outside*18;
+  const score = clamp(Math.round(raw),0,100);
+  const pass = score>=55;
+  return {pass, score};
+}
+
+btnGrade.onclick=()=>{
+  const r=computeTracePass();
+  if(r.pass){
+    traceResult.className="resultText ok";
+    traceResult.textContent="✅ 通過";
+    speakCoach("你通過了!");
+  }else{
+    traceResult.className="resultText bad";
+    traceResult.textContent="❌ 未通過";
+    speakCoach("未通過，再試試看。");
+  }
+};
+
+/** ====== TEACHER UI ====== **/
+function saveSettings(){
+  settings.requiredQuestions=clamp(+setRQ.value||10,1,100);
+  settings.requiredAccuracy=clamp(+setRA.value||80,1,100);
+  settings.autoSpeakOnQuestion=!!setAutoSpeak.checked;
+  settings.lockAfterPick=!!setLock.checked;
+  saveJSON(K_SETTINGS, settings);
+  updateTeacherMeta();
+  updateQuizMeta();
+}
+function updateTeacherMeta(){
+  enabledCount.textContent = "已選符號：" + settings.enabledSymbols.length + " / " + BOPOMOFO.length;
+  epState.textContent = RESULT_ENDPOINT ? "已設定" : "未設定（目前只保留在本機）";
+}
+function renderTeacherSymbols(){
+  teacherSym.innerHTML="";
+  BOPOMOFO.forEach(s=>{
+    const on=settings.enabledSymbols.indexOf(s)>=0;
+    const b=document.createElement("button");
+    b.className="symBtn"+(on?" on":"");
+    b.textContent=s;
+    b.onclick=()=>{
+      const set=new Set(settings.enabledSymbols);
+      if(set.has(s)) set.delete(s); else set.add(s);
+      settings.enabledSymbols=Array.from(set);
+      saveJSON(K_SETTINGS, settings);
+      renderTeacherSymbols();
+      updateTeacherMeta();
+      updateQuizMeta();
+    };
+    teacherSym.appendChild(b);
+  });
+}
+btnAll.onclick=()=>{settings.enabledSymbols=BOPOMOFO.slice(); saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
+btnNone.onclick=()=>{settings.enabledSymbols=[]; saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
+
+setRQ.value=settings.requiredQuestions;
+setRA.value=settings.requiredAccuracy;
+setAutoSpeak.checked=settings.autoSpeakOnQuestion;
+setLock.checked=settings.lockAfterPick;
+setRQ.oninput=saveSettings;
+setRA.oninput=saveSettings;
+setAutoSpeak.onchange=saveSettings;
+setLock.onchange=saveSettings;
+
+/** ====== QUIZ ====== **/
+let phase="ready";
+let levelIndex=0;
+let qIndex=0;
+let levelCorrect=0;
+let levelTotal=0;
+let locked=false;
+
+function enabledPool(){
+  return (settings.enabledSymbols && settings.enabledSymbols.length)?settings.enabledSymbols:BOPOMOFO.slice();
+}
+
+function updateStatsPills(){
+  pCorrect.textContent="答對 " + stats.correct;
+  pTotal.textContent="總題數 " + stats.total;
+  pAcc.textContent="正確率 " + percent(stats.correct,stats.total) + "%";
+}
+btnClearStats.onclick=()=>{
+  stats={correct:0,total:0};
+  saveJSON(K_STATS,stats);
+  updateStatsPills();
+};
+
+function updateQuizMeta(){
+  quizStd.textContent="本關標準：至少 " + settings.requiredQuestions + " 題、正確率至少 " + settings.requiredAccuracy + "%";
+  quizTotalLevels.textContent="共 " + enabledPool().length + " 關（老師可在教師頁選關卡範圍）";
+}
+
+function setQuizReadyUI(){
+  phase="ready";
+  btnStart.style.display="inline-block";
+  btnBackReady.style.display="none";
+  btnReplay.disabled=true;
+
+  quizTargetCard.style.display="none";
+  opts.style.display="none";
+  feedback.style.display="none";
+  quizActions.style.display="none";
+  quizHint.style.display="none";
+  allClear.style.display="none";
+  postStatus.textContent="";
+}
+
+function startQuiz(){
+  const pool=enabledPool();
+  if(pool.length===0){
+    speakCoach("老師還沒有選題庫喔。");
+    setTab("teacher");
+    return;
+  }
+
+  phase="inLevel";
+  levelIndex=0; qIndex=1; levelCorrect=0; levelTotal=0; locked=false;
+
+  btnStart.style.display="none";
+  btnBackReady.style.display="inline-block";
+  btnReplay.disabled=false;
+
+  quizTargetCard.style.display="block";
+  opts.style.display="grid";
+  feedback.style.display="block";
+  quizActions.style.display="flex";
+  quizHint.style.display="block";
+  allClear.style.display="none";
+
+  renderQuestion();
+  if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),120);
+}
+
+function currentLevelSymbol(){
+  const pool=enabledPool();
+  return pool[levelIndex] || pool[0] || "ㄅ";
+}
+
+function levelPassed(){
+  const acc=percent(levelCorrect, levelTotal);
+  return (levelTotal>=settings.requiredQuestions) && (acc>=settings.requiredAccuracy);
+}
+
+function renderQuestion(){
+  const pool=enabledPool();
+  const goal=currentLevelSymbol();
+  const totalLevels=pool.length;
+
+  pillLevel.textContent="第 " + (levelIndex+1) + " / " + totalLevels + " 關";
+  pillGoal.textContent="目標：" + goal;
+  pillDone.textContent="已做 " + levelTotal + " 題";
+  pillAcc.textContent="正確率 " + percent(levelCorrect,levelTotal) + "%";
+  quizBigSym.textContent=goal;
+
+  const ops=pick4(pool, goal);
+  opts.innerHTML="";
+  ops.forEach(s=>{
+    const b=document.createElement("button");
+    b.className="opt";
+    b.textContent=s;
+    b.onclick=()=>pickAnswer(s);
+    opts.appendChild(b);
+  });
+
+  feedback.textContent="先聽，再選。";
+  feedback.className="banner";
+  locked=false;
+
+  btnNext.style.display = (levelTotal>=settings.requiredQuestions) ? "none" : "inline-block";
+  btnFinishLevel.style.display = (levelTotal>=settings.requiredQuestions) ? "inline-block" : "none";
+}
+
+function applyFeedbackUI(chosen){
+  const goal=currentLevelSymbol();
+  const children=Array.from(opts.children);
+  children.forEach(btn=>{
+    const s=btn.textContent;
+    btn.classList.remove("ok","bad","dim");
+    if(s===goal) btn.classList.add("ok");
+    else if(s===chosen) btn.classList.add("bad");
+    else btn.classList.add("dim");
+  });
+}
+
+function pickAnswer(chosen){
+  if(locked) return;
+  const goal=currentLevelSymbol();
+  const ok=(chosen===goal);
+
+  levelTotal++;
+  if(ok) levelCorrect++;
+
+  if(settings.lockAfterPick) locked=true;
+
+  applyFeedbackUI(chosen);
+  feedback.textContent = ok ? "✅ 答對！" : "❌ 未通過，再試試看。";
+  setTimeout(()=>speakBopomofo(goal), 120);
+
+  btnNext.style.display = (levelTotal>=settings.requiredQuestions) ? "none" : "inline-block";
+  btnFinishLevel.style.display = (levelTotal>=settings.requiredQuestions) ? "inline-block" : "none";
+}
+
+btnReplay.onclick=()=>speakBopomofo(currentLevelSymbol());
+btnReplay2.onclick=()=>speakBopomofo(currentLevelSymbol());
+
+btnNext.onclick=()=>{
+  qIndex++;
+  renderQuestion();
+  if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),80);
+};
+
+btnFinishLevel.onclick=()=>{
+  if(levelPassed()){
+    speakCoach("你通過了!");
+    stats.correct += levelCorrect;
+    stats.total += levelTotal;
+    saveJSON(K_STATS, stats);
+    updateStatsPills();
+
+    const pool=enabledPool();
+    levelIndex++;
+    if(levelIndex>=pool.length){
+      showAllClear();
+      return;
+    }
+    qIndex=1; levelCorrect=0; levelTotal=0;
+    speakCoach("太好了，進入下一關。");
+    renderQuestion();
+    if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),200);
+  }else{
+    speakCoach("未通過，再試試看。");
+    qIndex=1; levelCorrect=0; levelTotal=0;
+    renderQuestion();
+    if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),120);
+  }
+};
+
+btnBackReady.onclick=()=>setQuizReadyUI();
+
+function showAllClear(){
+  quizTargetCard.style.display="none";
+  opts.style.display="none";
+  feedback.style.display="none";
+  quizActions.style.display="none";
+  quizHint.style.display="none";
+
+  allClear.style.display="block";
+  const pool=enabledPool();
+  allClearText.textContent="你已經把選定的 " + pool.length + " 個注音都通過了。";
+  speakCoach("你通過了!");
+}
+
+btnPlayAgain.onclick=()=>{ setQuizReadyUI(); };
+
+btnPost.onclick=async ()=>{
+  postStatus.textContent="回傳中…";
+  const payload={
+    type:"bopomofo_checkpoint_result",
+    timestamp: nowIso(),
+    deviceId: getDeviceId(),
+    student: { studentId: student.studentId||"", studentName: student.studentName||"" },
+    settings:{
+      requiredQuestions: settings.requiredQuestions,
+      requiredAccuracy: settings.requiredAccuracy,
+      enabledSymbols: enabledPool(),
+      mode:"checkpoint"
+    },
+    summary:{
+      totalLevels: enabledPool().length,
+      clearedLevels: enabledPool().length
+    }
+  };
+  const r=await postResult(payload);
+  if(r.skipped) postStatus.textContent="（尚未設定回傳端點：結果只保留在本機）";
+  else if(r.ok) postStatus.textContent="✅ 已回傳給老師";
+  else postStatus.textContent="⚠️ 回傳失敗（請檢查端點/網路/部署權限）";
+};
+
+btnStart.onclick=startQuiz;
+
+/** ====== INIT ====== **/
+(function init(){
+  setTheme(loadTheme());
+  themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
+
+  if(window.speechSynthesis){
+    pickVoice();
+    window.speechSynthesis.onvoiceschanged=()=>pickVoice();
+  }
+
+  renderSymbolButtons();
+  bigSym.textContent=currentSymbol;
+  resetTraceCanvas();
+
+  renderTeacherSymbols();
+  updateTeacherMeta();
+  updateQuizMeta();
+
+  updateStatsPills();
+  btnReplay.disabled=true;
+  setQuizReadyUI();
+
+  setTab("learn");
+})();
+</script>
+</body>
+</html>
