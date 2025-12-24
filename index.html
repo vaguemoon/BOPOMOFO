@@ -17,41 +17,60 @@
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC","Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text)}
-    .wrap{max-width:1100px;margin:0 auto;padding:18px}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .space{height:12px}
-    .title{font-size:22px;font-weight:900;letter-spacing:-0.02em}
-    .subtitle{color:var(--sub);font-weight:700;font-size:14px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .space{height:10px}
+    .title{font-size:20px;font-weight:900;letter-spacing:-0.02em}
+    .subtitle{color:var(--sub);font-weight:700;font-size:13px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:14px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+
     .btn{border:0;border-radius:18px;padding:12px 16px;font-weight:900;font-size:16px;cursor:pointer}
     .btnPrimary{background:var(--btn);color:var(--btnText)}
     .btnGhost{background:var(--ghostBg);color:var(--ghostText);border:1px solid var(--ghostBorder)}
+    .btnIcon{padding:12px 14px;min-width:56px;font-size:22px;display:inline-flex;align-items:center;justify-content:center}
     .btn:active{transform:scale(.99)}
-    .tabs .btn{min-width:96px}
-    .pill{display:inline-flex;align-items:center;gap:8px;border-radius:999px;background:var(--soft);padding:8px 12px;font-weight:900;font-size:13px}
+    .tabs .btn{min-width:92px}
+
     .grid2{display:grid;grid-template-columns:1fr;gap:12px}
     @media(min-width:980px){.grid2{grid-template-columns:1fr 1fr}}
+
     .symGrid{display:flex;flex-wrap:wrap;gap:8px}
     .symBtn{border-radius:16px;border:1px solid var(--border);background:var(--card);padding:10px 14px;font-size:20px;font-weight:900;cursor:pointer}
     .symBtn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
     [data-theme="dark"] .symBtn.on{background:var(--ok);color:#020617;border-color:var(--ok)}
-    .bigSym{font-size:72px;font-weight:1000;letter-spacing:0.02em}
+
     .hint{color:var(--sub);font-weight:800;font-size:12px}
+
     .canvasBox{display:flex;flex-direction:column;align-items:center;gap:10px}
     canvas{border-radius:18px;border:1px solid var(--border);background:#fff;touch-action:none}
-    .resultBox{width:100%;max-width:360px;border-radius:18px;border:1px solid var(--border);padding:14px;background:var(--card)}
-    .resultTitle{font-size:12px;font-weight:1000;color:var(--sub)}
-    .resultText{margin-top:10px;font-size:28px;font-weight:1000}
+
+    .resultBox{width:100%;max-width:360px;border-radius:18px;border:1px solid var(--border);padding:12px;background:var(--card)}
+    .resultText{margin-top:8px;font-size:26px;font-weight:1000}
     .ok{color:var(--ok)} .bad{color:var(--bad)}
+
     .qOpts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media(min-width:640px){.qOpts{grid-template-columns:repeat(4,1fr)}}
-    .opt{border-radius:18px;border:1px solid var(--border);background:var(--card);padding:18px 10px;font-size:46px;font-weight:1000;cursor:pointer}
+    @media(min-width:640px){.qOpts{grid-template-columns:repeat(2,1fr)}}
+    @media(min-width:980px){.qOpts{grid-template-columns:repeat(4,1fr)}}
+    .opt{border-radius:18px;border:1px solid var(--border);background:var(--card);padding:18px 10px;font-size:52px;font-weight:1000;cursor:pointer}
     .opt.dim{opacity:.6}
     .opt.ok{border-color:var(--ok);background:color-mix(in srgb, var(--ok) 12%, var(--card))}
     .opt.bad{border-color:var(--bad);background:color-mix(in srgb, var(--bad) 10%, var(--card))}
-    .banner{border-radius:18px;border:1px solid var(--border);padding:14px;background:var(--soft);font-weight:900}
-    .muted{color:var(--sub);font-weight:800}
-    input{width:100%;border-radius:14px;border:1px solid var(--border);padding:12px 12px;font-size:16px;font-weight:900;background:var(--bg);color:var(--text);outline:none}
+
+    select,input{width:100%;border-radius:14px;border:1px solid var(--border);padding:10px 10px;font-size:16px;font-weight:900;background:var(--bg);color:var(--text);outline:none}
+
+    /* 讓學生資料更小 */
+    .studentBar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .studentBar .mini{min-width:120px;flex:0 0 auto}
+    .studentBar .name{min-width:160px;flex:1 1 160px}
+    .label{font-size:12px;font-weight:900;color:var(--sub);margin-bottom:4px}
+
+    /* 測驗：更大更少的元素 */
+    .quizTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .quizOnly{max-width:980px;margin:0 auto}
+
+    /* ===== 穩定版：開始遊戲大按鈕 ===== */
+    .btnStartGame{padding:18px 22px;border-radius:26px;min-width:160px;font-size:22px;display:inline-flex;align-items:center;justify-content:center;gap:10px}
+    .btnStartGame .icon{font-size:30px;line-height:1}
   </style>
 </head>
 <body>
@@ -59,10 +78,10 @@
   <div class="row" style="justify-content:space-between;align-items:flex-end">
     <div>
       <div class="title">注音符號單音｜精熟練習</div>
-      <div class="subtitle">畫面精簡、提示顯著、孩子可獨立操作（GitHub Pages 版）</div>
+      <div class="subtitle">學習（點注音就發音）｜測驗（選對 + 描寫通過才得分）</div>
     </div>
     <div class="row" style="align-items:center">
-      <button id="themeBtn" class="btn btnGhost">🌙 暗色</button>
+      <button id="themeBtn" class="btn btnGhost">🌙</button>
     </div>
   </div>
 
@@ -76,21 +95,30 @@
 
   <div class="space"></div>
 
+  <!-- STUDENT (縮小) -->
   <div class="card">
-    <div style="font-weight:1000">學生資料</div>
-    <div class="hint">座號/代號必填（方便回傳老師）</div>
-    <div class="space"></div>
-    <div class="row">
-      <div style="flex:1;min-width:220px">
-        <div class="hint">座號/代號（必填）</div>
-        <input id="studentId" placeholder="例如：A03" maxlength="12" />
+    <div class="studentBar">
+      <div class="mini">
+        <div class="label">班級</div>
+        <select id="studentClass" aria-label="班級">
+          <option value="">—</option>
+        </select>
       </div>
-      <div style="flex:1;min-width:220px">
-        <div class="hint">姓名（可不填）</div>
-        <input id="studentName" placeholder="例如：小明" maxlength="20" />
+      <div class="mini">
+        <div class="label">座號</div>
+        <select id="studentSeat" aria-label="座號">
+          <option value="">—</option>
+        </select>
+      </div>
+      <div class="name">
+        <div class="label">姓名（可不填）</div>
+        <input id="studentName" placeholder="" maxlength="20" />
+      </div>
+      <div class="mini" style="display:flex;align-items:flex-end">
+        <button id="btnClearStudent" class="btn btnGhost" title="清除">🧹</button>
       </div>
     </div>
-    <div class="hint" style="margin-top:8px">※ 本機會記住這份輸入</div>
+    <div class="hint" id="studentHint" style="margin-top:6px"></div>
   </div>
 
   <div class="space"></div>
@@ -99,120 +127,74 @@
   <section id="pageLearn" class="grid2">
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-        <div>
-          <div style="font-weight:1000">學習：聽 + 看 + 描</div>
-          <div class="hint">先按發音，再描寫</div>
-        </div>
-        <button id="btnSpeakLearn" class="btn btnPrimary">發音 ▶</button>
+        <div style="font-weight:1000">點注音就會發音</div>
+        <button id="btnSpeakLearn" class="btn btnPrimary btnIcon" title="聽">🔊</button>
       </div>
-
       <div class="space"></div>
       <div class="symGrid" id="symList"></div>
-
-      <div class="space"></div>
-      <div class="card" style="background:var(--soft)">
-        <div style="display:flex;justify-content:space-between;align-items:flex-end">
-          <div id="bigSym" class="bigSym">ㄅ</div>
-          <div class="hint">提示：聽 2 次再描</div>
-        </div>
-      </div>
     </div>
 
     <div class="card">
-      <div style="font-weight:1000">紅線描寫（通過/未通過）</div>
-      <div class="hint">畫完按「完成評分」</div>
-      <div class="space"></div>
-
-      <div class="canvasBox">
-        <canvas id="traceCanvas" width="320" height="320"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <div style="font-weight:1000">描寫（通過 / 未通過）</div>
         <div class="row">
-          <button id="btnClear" class="btn btnGhost">清除重來</button>
-          <button id="btnGrade" class="btn btnPrimary">完成評分</button>
+          <button id="btnClearLearn" class="btn btnGhost btnIcon" title="清除">🧽</button>
+          <button id="btnGradeLearn" class="btn btnPrimary btnIcon" title="完成">✅</button>
         </div>
+      </div>
+      <div class="space"></div>
+      <div class="canvasBox">
+        <canvas id="learnCanvas" width="320" height="320"></canvas>
         <div class="resultBox" aria-live="polite">
-          <div class="resultTitle">描寫結果</div>
-          <div id="traceResult" class="hint" style="margin-top:8px">畫完按「完成評分」。</div>
+          <div id="learnResult" class="hint"> </div>
         </div>
-        <div class="hint">用手指或滑鼠沿著淡灰色字描寫（紅線）</div>
       </div>
     </div>
   </section>
 
-  <!-- QUIZ -->
+  <!-- QUIZ (盡量只留學生要操作的) -->
   <section id="pageQuiz" style="display:none">
-    <div class="grid2">
+    <div class="quizOnly">
       <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-          <div>
-            <div style="font-weight:1000">測驗：闖關模式</div>
-            <div class="hint">每一關固定一個注音：達標 → 下一關</div>
-          </div>
+        <div class="quizTop">
+          <!-- ✅ 穩定版：更像遊戲的開始按鈕 -->
+          <button id="btnStartQuiz" class="btn btnPrimary btnStartGame" title="開始">
+            <span class="icon">🎮</span><span>開始遊戲</span>
+          </button>
           <div class="row">
-            <button id="btnReplay" class="btn btnGhost" disabled>再聽一次 ▶</button>
-            <button id="btnStart" class="btn btnPrimary">開始闖關</button>
-            <button id="btnBackReady" class="btn btnGhost" style="display:none">回到開始</button>
+            <button id="btnReplayQuiz" class="btn btnGhost btnIcon" title="再聽一次" disabled>🔊</button>
+            <button id="btnResetQuiz" class="btn btnGhost btnIcon" title="重來" style="display:none">🔄</button>
           </div>
         </div>
 
         <div class="space"></div>
-        <div class="banner" id="quizBanner">
-          <div style="font-size:18px">準備好了就開始</div>
-          <div class="muted" id="quizStd">本關標準：至少 10 題、正確率至少 80%</div>
-          <div class="hint" id="quizTotalLevels">共 37 關</div>
-        </div>
 
-        <div class="space"></div>
-        <div class="card" id="quizTargetCard" style="display:none">
-          <div class="row" style="align-items:center;gap:10px;flex-wrap:wrap">
-            <span class="pill" id="pillLevel">第 1 / 1 關</span>
-            <span class="pill" id="pillGoal">目標：ㄅ</span>
-            <span class="pill" id="pillDone">已做 0 題</span>
-            <span class="pill" id="pillAcc">正確率 0%</span>
+        <div id="quizMain" class="grid2" style="display:none">
+          <div class="card" style="background:var(--soft)">
+            <div class="qOpts" id="quizOpts"></div>
+            <div class="space"></div>
+            <div id="quizMsg" class="hint" style="text-align:center"></div>
           </div>
-          <div class="space"></div>
-          <div class="bigSym" id="quizBigSym">ㄅ</div>
-          <div class="hint">按「再聽一次」或直接選</div>
-        </div>
 
-        <div class="space"></div>
-        <div class="qOpts" id="opts" style="display:none"></div>
-
-        <div class="space"></div>
-        <div class="banner" id="feedback" style="min-height:56px;display:none">先聽，再選。</div>
-
-        <div class="space"></div>
-        <div class="row" id="quizActions" style="display:none">
-          <button id="btnReplay2" class="btn btnGhost">再聽一次 ▶</button>
-          <button id="btnNext" class="btn btnPrimary">下一題 →</button>
-          <button id="btnFinishLevel" class="btn btnPrimary" style="display:none">看本關結果</button>
-        </div>
-
-        <div class="hint" id="quizHint" style="display:none">本關做滿題數後按「看本關結果」。通過就會進下一關。</div>
-
-        <div class="space"></div>
-        <div class="card" id="allClear" style="display:none">
-          <div style="font-size:22px;font-weight:1000">🎉 全部通關！</div>
-          <div class="muted" id="allClearText">你已經全部通過。</div>
-          <div class="space"></div>
-          <div class="row">
-            <button id="btnPost" class="btn btnPrimary">回傳給老師</button>
-            <button id="btnPlayAgain" class="btn btnGhost">再玩一次</button>
+          <!-- 正確後才會出現描寫 -->
+          <div class="card" id="quizTraceCard" style="display:none">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+              <div style="font-weight:1000">描寫通過才得分</div>
+              <div class="row">
+                <button id="btnClearQuizTrace" class="btn btnGhost btnIcon" title="清除">🧽</button>
+                <button id="btnGradeQuizTrace" class="btn btnPrimary btnIcon" title="完成">✅</button>
+              </div>
+            </div>
+            <div class="space"></div>
+            <div class="canvasBox">
+              <canvas id="quizCanvas" width="320" height="320"></canvas>
+              <div class="resultBox" aria-live="polite">
+                <div id="quizTraceResult" class="hint"> </div>
+              </div>
+            </div>
           </div>
-          <div class="hint" id="postStatus" style="margin-top:8px"></div>
         </div>
-      </div>
 
-      <div class="card">
-        <div style="font-weight:1000">本機累積紀錄</div>
-        <div class="space"></div>
-        <div class="row">
-          <span class="pill" id="pCorrect">答對 0</span>
-          <span class="pill" id="pTotal">總題數 0</span>
-          <span class="pill" id="pAcc">正確率 0%</span>
-        </div>
-        <div class="hint" style="margin-top:10px">這份是「此裝置」累積，不是老師端統計。</div>
-        <div class="space"></div>
-        <button id="btnClearStats" class="btn btnGhost">清空本機紀錄</button>
       </div>
     </div>
   </section>
@@ -233,20 +215,20 @@
 
       <div class="space"></div>
       <div class="row">
-        <div style="flex:1;min-width:220px">
-          <div class="hint">題數門檻</div>
+        <div style="flex:1;min-width:180px">
+          <div class="label">題數門檻</div>
           <input id="setRQ" type="number" min="1" max="100" />
         </div>
-        <div style="flex:1;min-width:220px">
-          <div class="hint">正確率門檻（%）</div>
+        <div style="flex:1;min-width:180px">
+          <div class="label">正確率門檻（%）</div>
           <input id="setRA" type="number" min="1" max="100" />
         </div>
       </div>
 
       <div class="space"></div>
       <div class="row">
-        <label class="pill"><input id="setAutoSpeak" type="checkbox" /> 每題開始自動播一次</label>
-        <label class="pill"><input id="setLock" type="checkbox" /> 選完鎖定（避免連點）</label>
+        <label class="hint" style="display:flex;align-items:center;gap:8px"><input id="setAutoSpeak" type="checkbox" /> 每題開始自動播一次</label>
+        <label class="hint" style="display:flex;align-items:center;gap:8px"><input id="setLock" type="checkbox" /> 選完鎖定（避免連點）</label>
       </div>
 
       <div class="space"></div>
@@ -255,36 +237,22 @@
       <div class="symGrid" id="teacherSym"></div>
 
       <div class="space"></div>
-      <div class="banner">
-        結果回傳端點：<span id="epState"></span>
-      </div>
+      <div class="hint">結果回傳端點（/exec）：</div>
+      <input id="endpointInput" placeholder="貼上 Apps Script /exec（可留空）" />
+      <div class="hint" style="margin-top:6px" id="epState"></div>
     </div>
   </section>
-
-  <div class="space"></div>
-  <div class="card">
-    <div style="font-weight:1000">除錯提示（若你還是看不到畫面）</div>
-    <div class="hint" style="margin-top:6px">
-      1) 用 Chrome 開「開發者工具 → Console」看第一條紅色錯誤。<br/>
-      2) GitHub Pages 要放在 repo 根目錄的 index.html（或 docs/ 但 Pages 要對應）。<br/>
-      3) 回傳 Apps Script 若失敗，多半是 URL 不對或未部署為「任何人可存取」。<br/>
-    </div>
-  </div>
 
 </div>
 
 <script>
 /** ====== CONFIG ====== **/
-// ✅ 這裡請貼你的 Apps Script /exec
-// 例如：https://script.google.com/macros/s/XXXXXXX/exec
-const RESULT_ENDPOINT = "";
-
-/** ====== STORAGE ====== **/
-const K_STATS="bopomofo_stats_plain_v1";
-const K_SETTINGS="bopomofo_teacher_plain_v1";
-const K_STUDENT="bopomofo_student_plain_v1";
-const K_THEME="bopomofo_theme_plain_v1";
-const K_DEV="bopomofo_device_plain_v1";
+const K_STATS="bopomofo_stats_plain_v2";
+const K_SETTINGS="bopomofo_teacher_plain_v2";
+const K_STUDENT="bopomofo_student_plain_v2";
+const K_THEME="bopomofo_theme_plain_v2";
+const K_DEV="bopomofo_device_plain_v2";
+const K_ENDPOINT="bopomofo_endpoint_plain_v1";
 
 /** ====== DATA ====== **/
 const BOPOMOFO = [
@@ -298,6 +266,10 @@ const DEFAULT_SETTINGS = {
   enabledSymbols: BOPOMOFO.slice(),
   autoSpeakOnQuestion: true,
   lockAfterPick: true,
+  // 描寫判定（更寬鬆一些，讓孩子比較容易過）
+  tracePassScore: 52,
+  traceToleranceStroke: 38,
+  traceLineWidth: 22,
 };
 
 function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
@@ -306,7 +278,6 @@ function nowIso(){return new Date().toISOString()}
 function loadJSON(k,f){try{const r=localStorage.getItem(k);return r?JSON.parse(r):f}catch{return f}}
 function saveJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
 
-// ✅ 修正：避免舊 iPad / 舊 Safari 因 optional chaining（?.）直接白畫面
 function getDeviceId(){
   var v=localStorage.getItem(K_DEV);
   if(v) return v;
@@ -339,7 +310,7 @@ function loadTheme(){
 function setTheme(t){
   document.documentElement.dataset.theme=t;
   localStorage.setItem(K_THEME,t);
-  themeBtn.textContent = (t==="dark") ? "☀️ 亮色" : "🌙 暗色";
+  themeBtn.textContent = (t==="dark") ? "☀️" : "🌙";
 }
 
 /** ====== VOICE ====== **/
@@ -376,10 +347,17 @@ function speakBopomofo(sym){speak(sym,"bopomofo")}
 function speakCoach(msg){speak(msg,"coach")}
 
 /** ====== POST RESULT ====== **/
+function loadEndpoint(){
+  return localStorage.getItem(K_ENDPOINT)||"";
+}
+function saveEndpoint(v){
+  localStorage.setItem(K_ENDPOINT, (v||"").trim());
+}
 async function postResult(payload){
-  if(!RESULT_ENDPOINT) return {ok:false,skipped:true};
+  const endpoint=loadEndpoint();
+  if(!endpoint) return {ok:false,skipped:true};
   try{
-    const res=await fetch(RESULT_ENDPOINT,{
+    const res=await fetch(endpoint,{
       method:"POST",
       headers:{"Content-Type":"text/plain;charset=utf-8"},
       body:JSON.stringify(payload),
@@ -395,8 +373,11 @@ settings.requiredAccuracy=clamp(+settings.requiredAccuracy||80,1,100);
 settings.enabledSymbols=(Array.isArray(settings.enabledSymbols)&&settings.enabledSymbols.length)?settings.enabledSymbols.filter(x=>BOPOMOFO.indexOf(x)>=0):BOPOMOFO.slice();
 settings.autoSpeakOnQuestion=!!settings.autoSpeakOnQuestion;
 settings.lockAfterPick=!!settings.lockAfterPick;
+settings.tracePassScore=clamp(+settings.tracePassScore||52,40,90);
+settings.traceToleranceStroke=clamp(+settings.traceToleranceStroke||38,24,80);
+settings.traceLineWidth=clamp(+settings.traceLineWidth||22,14,34);
 
-let student=loadJSON(K_STUDENT,{studentId:"",studentName:""});
+let student=loadJSON(K_STUDENT,{classNo:"", seatNo:"", name:""});
 let stats=loadJSON(K_STATS,{correct:0,total:0});
 stats.correct=+stats.correct||0; stats.total=+stats.total||0;
 
@@ -411,44 +392,35 @@ const pageLearn=document.getElementById("pageLearn");
 const pageQuiz=document.getElementById("pageQuiz");
 const pageTeacher=document.getElementById("pageTeacher");
 
-const studentId=document.getElementById("studentId");
+// student
+const studentClass=document.getElementById("studentClass");
+const studentSeat=document.getElementById("studentSeat");
 const studentName=document.getElementById("studentName");
+const btnClearStudent=document.getElementById("btnClearStudent");
+const studentHint=document.getElementById("studentHint");
 
+// learn
 const symList=document.getElementById("symList");
-const bigSym=document.getElementById("bigSym");
 const btnSpeakLearn=document.getElementById("btnSpeakLearn");
+const learnCanvas=document.getElementById("learnCanvas");
+const btnClearLearn=document.getElementById("btnClearLearn");
+const btnGradeLearn=document.getElementById("btnGradeLearn");
+const learnResult=document.getElementById("learnResult");
 
-const traceCanvas=document.getElementById("traceCanvas");
-const btnClear=document.getElementById("btnClear");
-const btnGrade=document.getElementById("btnGrade");
-const traceResult=document.getElementById("traceResult");
+// quiz
+const btnStartQuiz=document.getElementById("btnStartQuiz");
+const btnReplayQuiz=document.getElementById("btnReplayQuiz");
+const btnResetQuiz=document.getElementById("btnResetQuiz");
+const quizMain=document.getElementById("quizMain");
+const quizOpts=document.getElementById("quizOpts");
+const quizMsg=document.getElementById("quizMsg");
+const quizTraceCard=document.getElementById("quizTraceCard");
+const quizCanvas=document.getElementById("quizCanvas");
+const btnClearQuizTrace=document.getElementById("btnClearQuizTrace");
+const btnGradeQuizTrace=document.getElementById("btnGradeQuizTrace");
+const quizTraceResult=document.getElementById("quizTraceResult");
 
-/* quiz */
-const quizStd=document.getElementById("quizStd");
-const quizTotalLevels=document.getElementById("quizTotalLevels");
-const btnStart=document.getElementById("btnStart");
-const btnBackReady=document.getElementById("btnBackReady");
-const btnReplay=document.getElementById("btnReplay");
-const quizTargetCard=document.getElementById("quizTargetCard");
-const quizBigSym=document.getElementById("quizBigSym");
-const pillLevel=document.getElementById("pillLevel");
-const pillGoal=document.getElementById("pillGoal");
-const pillDone=document.getElementById("pillDone");
-const pillAcc=document.getElementById("pillAcc");
-const opts=document.getElementById("opts");
-const feedback=document.getElementById("feedback");
-const quizActions=document.getElementById("quizActions");
-const btnReplay2=document.getElementById("btnReplay2");
-const btnNext=document.getElementById("btnNext");
-const btnFinishLevel=document.getElementById("btnFinishLevel");
-const quizHint=document.getElementById("quizHint");
-const allClear=document.getElementById("allClear");
-const allClearText=document.getElementById("allClearText");
-const btnPost=document.getElementById("btnPost");
-const btnPlayAgain=document.getElementById("btnPlayAgain");
-const postStatus=document.getElementById("postStatus");
-
-/* teacher */
+// teacher
 const setRQ=document.getElementById("setRQ");
 const setRA=document.getElementById("setRA");
 const setAutoSpeak=document.getElementById("setAutoSpeak");
@@ -457,13 +429,8 @@ const btnAll=document.getElementById("btnAll");
 const btnNone=document.getElementById("btnNone");
 const enabledCount=document.getElementById("enabledCount");
 const teacherSym=document.getElementById("teacherSym");
+const endpointInput=document.getElementById("endpointInput");
 const epState=document.getElementById("epState");
-
-/* stats pills */
-const pCorrect=document.getElementById("pCorrect");
-const pTotal=document.getElementById("pTotal");
-const pAcc=document.getElementById("pAcc");
-const btnClearStats=document.getElementById("btnClearStats");
 
 /** ====== TABS ====== **/
 function setTab(t){
@@ -480,20 +447,159 @@ tabLearn.onclick=()=>setTab("learn");
 tabQuiz.onclick=()=>setTab("quiz");
 tabTeacher.onclick=()=>setTab("teacher");
 
-/** ====== STUDENT ====== **/
-studentId.value = student.studentId||"";
-studentName.value = student.studentName||"";
-function saveStudent(){
-  student.studentId = (studentId.value||"").replace(/\s+/g,"").slice(0,12);
-  student.studentName = (studentName.value||"").slice(0,20);
-  studentId.value = student.studentId;
-  studentName.value = student.studentName;
-  saveJSON(K_STUDENT, student);
+/** ====== STUDENT UI (下拉) ====== **/
+function fillSelect(select, from, to){
+  for(let i=from;i<=to;i++){
+    const opt=document.createElement("option");
+    opt.value=String(i);
+    opt.textContent=String(i);
+    select.appendChild(opt);
+  }
 }
-studentId.addEventListener("input", saveStudent);
-studentName.addEventListener("input", saveStudent);
+fillSelect(studentClass,1,6);
+fillSelect(studentSeat,1,25);
 
-/** ====== LEARN UI ====== **/
+studentClass.value=student.classNo||"";
+studentSeat.value=student.seatNo||"";
+studentName.value=student.name||"";
+
+function computedStudentId(){
+  if(student.classNo && student.seatNo) return String(student.classNo).padStart(1,"0") + "-" + String(student.seatNo).padStart(2,"0");
+  return "";
+}
+function updateStudentHint(){
+  const sid=computedStudentId();
+  if(sid) studentHint.textContent = "已選：" + sid + "（可回傳結果）";
+  else studentHint.textContent = "未選班級/座號：仍可測驗，但不會回傳";
+}
+function saveStudent(){
+  student.classNo = (studentClass.value||"").trim();
+  student.seatNo  = (studentSeat.value||"").trim();
+  student.name = (studentName.value||"").slice(0,20);
+  saveJSON(K_STUDENT, student);
+  updateStudentHint();
+}
+studentClass.addEventListener("change", saveStudent);
+studentSeat.addEventListener("change", saveStudent);
+studentName.addEventListener("input", saveStudent);
+btnClearStudent.onclick=()=>{
+  student={classNo:"", seatNo:"", name:""};
+  saveJSON(K_STUDENT, student);
+  studentClass.value="";
+  studentSeat.value="";
+  studentName.value="";
+  updateStudentHint();
+};
+
+/** ====== TRACE PAD (可重用) ====== **/
+function createTracePad(canvas, getSymbol, resultEl){
+  const SIZE=320;
+  const ctx=canvas.getContext("2d");
+  let drawing=false;
+  let last=null;
+
+  function reset(){
+    resultEl.className="hint";
+    resultEl.textContent="";
+
+    ctx.clearRect(0,0,SIZE,SIZE);
+    ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
+
+    // grid
+    ctx.strokeStyle="rgba(15,23,42,0.08)";
+    ctx.lineWidth=1;
+    for(let i=1;i<4;i++){
+      const p=SIZE*i/4;
+      ctx.beginPath(); ctx.moveTo(p,0); ctx.lineTo(p,SIZE); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0,p); ctx.lineTo(SIZE,p); ctx.stroke();
+    }
+
+    // symbol guide
+    const sym=getSymbol();
+    ctx.fillStyle="rgba(15,23,42,0.18)";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
+    ctx.fillText(sym, SIZE/2, SIZE/2+10);
+
+    ctx.strokeStyle="rgba(15,23,42,0.12)";
+    ctx.lineWidth=2;
+    ctx.strokeRect(8,8,SIZE-16,SIZE-16);
+  }
+
+  function posFromEvent(e){
+    const r=canvas.getBoundingClientRect();
+    const x=clamp(e.clientX-r.left,0,r.width);
+    const y=clamp(e.clientY-r.top,0,r.height);
+    return {x,y};
+  }
+
+  canvas.addEventListener("pointerdown",(e)=>{
+    drawing=true;
+    last=posFromEvent(e);
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("pointermove",(e)=>{
+    if(!drawing) return;
+    const p=posFromEvent(e);
+    if(!last){last=p;return;}
+    ctx.strokeStyle="#ef4444";
+    ctx.lineWidth=settings.traceLineWidth;
+    ctx.lineCap="round";
+    ctx.lineJoin="round";
+    ctx.beginPath();
+    ctx.moveTo(last.x,last.y);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    last=p;
+  });
+  function endDraw(){drawing=false; last=null;}
+  canvas.addEventListener("pointerup",endDraw);
+  canvas.addEventListener("pointercancel",endDraw);
+
+  function computePass(){
+    const sym=getSymbol();
+
+    // mask
+    const mask=document.createElement("canvas");
+    mask.width=SIZE; mask.height=SIZE;
+    const m=mask.getContext("2d");
+    m.fillStyle="#fff"; m.fillRect(0,0,SIZE,SIZE);
+    m.fillStyle="#000";
+    m.textAlign="center"; m.textBaseline="middle";
+    m.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
+    m.fillText(sym, SIZE/2, SIZE/2+10);
+    m.strokeStyle="#000";
+    m.lineWidth=settings.traceToleranceStroke;
+    m.strokeText(sym, SIZE/2, SIZE/2+10);
+
+    const md=m.getImageData(0,0,SIZE,SIZE).data;
+    const dd=ctx.getImageData(0,0,SIZE,SIZE).data;
+
+    let targetArea=0, drawnTotal=0, hit=0, out=0;
+    for(let i=0;i<md.length;i+=4){
+      const isTarget = md[i+3]>10 && (md[i]<220 || md[i+1]<220 || md[i+2]<220);
+      if(isTarget) targetArea++;
+
+      const r=dd[i], g=dd[i+1], b=dd[i+2], a=dd[i+3];
+      const isRed = a>0 && r>150 && g<180 && b<180;
+      if(!isRed) continue;
+      drawnTotal++;
+      if(isTarget) hit++; else out++;
+    }
+
+    const coverage = targetArea? hit/targetArea : 0;
+    const outside = drawnTotal? out/drawnTotal : 0;
+    const raw = coverage*130 + 12 - outside*18;
+    const score = clamp(Math.round(raw),0,100);
+    const pass = score>=settings.tracePassScore;
+    return {pass, score};
+  }
+
+  return { reset, computePass };
+}
+
+/** ====== LEARN ====== **/
 function renderSymbolButtons(){
   symList.innerHTML="";
   BOPOMOFO.forEach(s=>{
@@ -502,129 +608,31 @@ function renderSymbolButtons(){
     b.textContent=s;
     b.onclick=()=>{
       currentSymbol=s;
-      bigSym.textContent=s;
+      speakBopomofo(s); // ✅ 點選就發音
       renderSymbolButtons();
-      resetTraceCanvas();
+      learnPad.reset();
     };
     symList.appendChild(b);
   });
 }
 btnSpeakLearn.onclick=()=>speakBopomofo(currentSymbol);
 
-/** ====== CANVAS TRACE ====== **/
-const SIZE=320;
-const ctx=traceCanvas.getContext("2d");
-let drawing=false;
-let last=null;
-
-function resetTraceCanvas(){
-  traceResult.className="hint";
-  traceResult.textContent="畫完按「完成評分」。";
-
-  ctx.clearRect(0,0,SIZE,SIZE);
-  ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
-
-  ctx.strokeStyle="rgba(15,23,42,0.08)";
-  ctx.lineWidth=1;
-  for(let i=1;i<4;i++){
-    const p=SIZE*i/4;
-    ctx.beginPath(); ctx.moveTo(p,0); ctx.lineTo(p,SIZE); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,p); ctx.lineTo(SIZE,p); ctx.stroke();
-  }
-
-  ctx.fillStyle="rgba(15,23,42,0.18)";
-  ctx.textAlign="center";
-  ctx.textBaseline="middle";
-  ctx.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
-  ctx.fillText(currentSymbol, SIZE/2, SIZE/2+10);
-
-  ctx.strokeStyle="rgba(15,23,42,0.12)";
-  ctx.lineWidth=2;
-  ctx.strokeRect(8,8,SIZE-16,SIZE-16);
-}
-
-function posFromEvent(e){
-  const r=traceCanvas.getBoundingClientRect();
-  const x=clamp(e.clientX-r.left,0,r.width);
-  const y=clamp(e.clientY-r.top,0,r.height);
-  return {x,y};
-}
-
-traceCanvas.addEventListener("pointerdown",(e)=>{
-  drawing=true;
-  last=posFromEvent(e);
-  traceCanvas.setPointerCapture(e.pointerId);
-});
-traceCanvas.addEventListener("pointermove",(e)=>{
-  if(!drawing) return;
-  const p=posFromEvent(e);
-  if(!last){last=p;return;}
-  ctx.strokeStyle="#ef4444";
-  ctx.lineWidth=20;
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
-  ctx.beginPath();
-  ctx.moveTo(last.x,last.y);
-  ctx.lineTo(p.x,p.y);
-  ctx.stroke();
-  last=p;
-});
-function endDraw(){drawing=false; last=null;}
-traceCanvas.addEventListener("pointerup",endDraw);
-traceCanvas.addEventListener("pointercancel",endDraw);
-
-btnClear.onclick=resetTraceCanvas;
-
-function computeTracePass(){
-  const mask=document.createElement("canvas");
-  mask.width=SIZE; mask.height=SIZE;
-  const m=mask.getContext("2d");
-  m.fillStyle="#fff"; m.fillRect(0,0,SIZE,SIZE);
-  m.fillStyle="#000";
-  m.textAlign="center"; m.textBaseline="middle";
-  m.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
-  m.fillText(currentSymbol, SIZE/2, SIZE/2+10);
-  m.strokeStyle="#000";
-  m.lineWidth=34;
-  m.strokeText(currentSymbol, SIZE/2, SIZE/2+10);
-
-  const md=m.getImageData(0,0,SIZE,SIZE).data;
-  const dd=ctx.getImageData(0,0,SIZE,SIZE).data;
-
-  let targetArea=0, drawnTotal=0, hit=0, out=0;
-  for(let i=0;i<md.length;i+=4){
-    const isTarget = md[i+3]>10 && (md[i]<220 || md[i+1]<220 || md[i+2]<220);
-    if(isTarget) targetArea++;
-
-    const r=dd[i], g=dd[i+1], b=dd[i+2], a=dd[i+3];
-    const isRed = a>0 && r>150 && g<180 && b<180;
-    if(!isRed) continue;
-    drawnTotal++;
-    if(isTarget) hit++; else out++;
-  }
-
-  const coverage = targetArea? hit/targetArea : 0;
-  const outside = drawnTotal? out/drawnTotal : 0;
-  const raw = coverage*130 + 12 - outside*18;
-  const score = clamp(Math.round(raw),0,100);
-  const pass = score>=55;
-  return {pass, score};
-}
-
-btnGrade.onclick=()=>{
-  const r=computeTracePass();
+const learnPad=createTracePad(learnCanvas, ()=>currentSymbol, learnResult);
+btnClearLearn.onclick=()=>learnPad.reset();
+btnGradeLearn.onclick=()=>{
+  const r=learnPad.computePass();
   if(r.pass){
-    traceResult.className="resultText ok";
-    traceResult.textContent="✅ 通過";
+    learnResult.className="resultText ok";
+    learnResult.textContent="✅ 通過";
     speakCoach("你通過了!");
   }else{
-    traceResult.className="resultText bad";
-    traceResult.textContent="❌ 未通過";
+    learnResult.className="resultText bad";
+    learnResult.textContent="❌ 未通過";
     speakCoach("未通過，再試試看。");
   }
 };
 
-/** ====== TEACHER UI ====== **/
+/** ====== TEACHER ====== **/
 function saveSettings(){
   settings.requiredQuestions=clamp(+setRQ.value||10,1,100);
   settings.requiredAccuracy=clamp(+setRA.value||80,1,100);
@@ -632,11 +640,11 @@ function saveSettings(){
   settings.lockAfterPick=!!setLock.checked;
   saveJSON(K_SETTINGS, settings);
   updateTeacherMeta();
-  updateQuizMeta();
 }
 function updateTeacherMeta(){
   enabledCount.textContent = "已選符號：" + settings.enabledSymbols.length + " / " + BOPOMOFO.length;
-  epState.textContent = RESULT_ENDPOINT ? "已設定" : "未設定（目前只保留在本機）";
+  const ep=loadEndpoint();
+  epState.textContent = ep ? "已設定：" + ep : "未設定（空白 = 不回傳）";
 }
 function renderTeacherSymbols(){
   teacherSym.innerHTML="";
@@ -652,13 +660,12 @@ function renderTeacherSymbols(){
       saveJSON(K_SETTINGS, settings);
       renderTeacherSymbols();
       updateTeacherMeta();
-      updateQuizMeta();
     };
     teacherSym.appendChild(b);
   });
 }
-btnAll.onclick=()=>{settings.enabledSymbols=BOPOMOFO.slice(); saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
-btnNone.onclick=()=>{settings.enabledSymbols=[]; saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
+btnAll.onclick=()=>{settings.enabledSymbols=BOPOMOFO.slice(); saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta();};
+btnNone.onclick=()=>{settings.enabledSymbols=[]; saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta();};
 
 setRQ.value=settings.requiredQuestions;
 setRA.value=settings.requiredAccuracy;
@@ -669,47 +676,40 @@ setRA.oninput=saveSettings;
 setAutoSpeak.onchange=saveSettings;
 setLock.onchange=saveSettings;
 
-/** ====== QUIZ ====== **/
-let phase="ready";
+endpointInput.value=loadEndpoint();
+endpointInput.addEventListener("input", ()=>{
+  saveEndpoint(endpointInput.value);
+  updateTeacherMeta();
+});
+
+/** ====== QUIZ (不顯示多餘資訊、不允許下一題按鈕) ====== **/
+let quizRunning=false;
 let levelIndex=0;
-let qIndex=0;
 let levelCorrect=0;
 let levelTotal=0;
-let locked=false;
+let quizGoal="ㄅ";
+let quizLocked=false;
+let quizNeedTrace=false;
+let quizChosenOk=false;
 
 function enabledPool(){
   return (settings.enabledSymbols && settings.enabledSymbols.length)?settings.enabledSymbols:BOPOMOFO.slice();
 }
 
-function updateStatsPills(){
-  pCorrect.textContent="答對 " + stats.correct;
-  pTotal.textContent="總題數 " + stats.total;
-  pAcc.textContent="正確率 " + percent(stats.correct,stats.total) + "%";
-}
-btnClearStats.onclick=()=>{
-  stats={correct:0,total:0};
-  saveJSON(K_STATS,stats);
-  updateStatsPills();
-};
-
-function updateQuizMeta(){
-  quizStd.textContent="本關標準：至少 " + settings.requiredQuestions + " 題、正確率至少 " + settings.requiredAccuracy + "%";
-  quizTotalLevels.textContent="共 " + enabledPool().length + " 關（老師可在教師頁選關卡範圍）";
+function resetQuizUI(){
+  quizRunning=false;
+  quizMain.style.display="none";
+  quizTraceCard.style.display="none";
+  btnReplayQuiz.disabled=true;
+  btnResetQuiz.style.display="none";
+  quizMsg.textContent="";
+  quizTraceResult.textContent="";
+  quizTraceResult.className="hint";
 }
 
-function setQuizReadyUI(){
-  phase="ready";
-  btnStart.style.display="inline-block";
-  btnBackReady.style.display="none";
-  btnReplay.disabled=true;
-
-  quizTargetCard.style.display="none";
-  opts.style.display="none";
-  feedback.style.display="none";
-  quizActions.style.display="none";
-  quizHint.style.display="none";
-  allClear.style.display="none";
-  postStatus.textContent="";
+function currentLevelSymbol(){
+  const pool=enabledPool();
+  return pool[levelIndex] || pool[0] || "ㄅ";
 }
 
 function startQuiz(){
@@ -720,193 +720,198 @@ function startQuiz(){
     return;
   }
 
-  phase="inLevel";
-  levelIndex=0; qIndex=1; levelCorrect=0; levelTotal=0; locked=false;
-
-  btnStart.style.display="none";
-  btnBackReady.style.display="inline-block";
-  btnReplay.disabled=false;
-
-  quizTargetCard.style.display="block";
-  opts.style.display="grid";
-  feedback.style.display="block";
-  quizActions.style.display="flex";
-  quizHint.style.display="block";
-  allClear.style.display="none";
-
-  renderQuestion();
-  if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),120);
+  quizRunning=true;
+  levelIndex=0; levelCorrect=0; levelTotal=0;
+  quizMain.style.display="grid";
+  btnReplayQuiz.disabled=false;
+  btnResetQuiz.style.display="inline-flex";
+  quizTraceCard.style.display="none";
+  nextQuestion();
 }
 
-function currentLevelSymbol(){
+function nextQuestion(){
+  quizLocked=false;
+  quizNeedTrace=false;
+  quizChosenOk=false;
+  quizTraceCard.style.display="none";
+  quizTraceResult.textContent="";
+  quizTraceResult.className="hint";
+  quizMsg.textContent="";
+
+  quizGoal=currentLevelSymbol();
+  renderQuizOptions();
+
+  if(settings.autoSpeakOnQuestion){
+    setTimeout(()=>speakBopomofo(quizGoal), 120);
+  }
+}
+
+function renderQuizOptions(){
   const pool=enabledPool();
-  return pool[levelIndex] || pool[0] || "ㄅ";
-}
-
-function levelPassed(){
-  const acc=percent(levelCorrect, levelTotal);
-  return (levelTotal>=settings.requiredQuestions) && (acc>=settings.requiredAccuracy);
-}
-
-function renderQuestion(){
-  const pool=enabledPool();
-  const goal=currentLevelSymbol();
-  const totalLevels=pool.length;
-
-  pillLevel.textContent="第 " + (levelIndex+1) + " / " + totalLevels + " 關";
-  pillGoal.textContent="目標：" + goal;
-  pillDone.textContent="已做 " + levelTotal + " 題";
-  pillAcc.textContent="正確率 " + percent(levelCorrect,levelTotal) + "%";
-  quizBigSym.textContent=goal;
-
-  const ops=pick4(pool, goal);
-  opts.innerHTML="";
+  const ops=pick4(pool, quizGoal);
+  quizOpts.innerHTML="";
   ops.forEach(s=>{
     const b=document.createElement("button");
     b.className="opt";
     b.textContent=s;
     b.onclick=()=>pickAnswer(s);
-    opts.appendChild(b);
+    quizOpts.appendChild(b);
   });
-
-  feedback.textContent="先聽，再選。";
-  feedback.className="banner";
-  locked=false;
-
-  btnNext.style.display = (levelTotal>=settings.requiredQuestions) ? "none" : "inline-block";
-  btnFinishLevel.style.display = (levelTotal>=settings.requiredQuestions) ? "inline-block" : "none";
 }
 
 function applyFeedbackUI(chosen){
-  const goal=currentLevelSymbol();
-  const children=Array.from(opts.children);
+  const children=Array.from(quizOpts.children);
   children.forEach(btn=>{
     const s=btn.textContent;
     btn.classList.remove("ok","bad","dim");
-    if(s===goal) btn.classList.add("ok");
+    if(s===quizGoal) btn.classList.add("ok");
     else if(s===chosen) btn.classList.add("bad");
     else btn.classList.add("dim");
   });
 }
 
+const quizPad=createTracePad(quizCanvas, ()=>quizGoal, quizTraceResult);
+
 function pickAnswer(chosen){
-  if(locked) return;
-  const goal=currentLevelSymbol();
-  const ok=(chosen===goal);
+  if(quizLocked) return;
 
-  levelTotal++;
-  if(ok) levelCorrect++;
-
-  if(settings.lockAfterPick) locked=true;
-
+  const ok=(chosen===quizGoal);
   applyFeedbackUI(chosen);
-  feedback.textContent = ok ? "✅ 答對！" : "❌ 未通過，再試試看。";
-  setTimeout(()=>speakBopomofo(goal), 120);
+  speakBopomofo(quizGoal);
 
-  btnNext.style.display = (levelTotal>=settings.requiredQuestions) ? "none" : "inline-block";
-  btnFinishLevel.style.display = (levelTotal>=settings.requiredQuestions) ? "inline-block" : "none";
+  if(settings.lockAfterPick) quizLocked=true;
+
+  if(!ok){
+    quizMsg.textContent="";
+    speakCoach("未通過，再試試看。");
+    return; // 仍然停留在此題，學生再點一次即可
+  }
+
+  // ✅ 選對才進入描寫關卡：通過才算得分
+  quizChosenOk=true;
+  quizNeedTrace=true;
+  quizTraceCard.style.display="block";
+  quizPad.reset();
+  speakCoach("請描寫一次。");
 }
 
-btnReplay.onclick=()=>speakBopomofo(currentLevelSymbol());
-btnReplay2.onclick=()=>speakBopomofo(currentLevelSymbol());
+btnClearQuizTrace.onclick=()=>quizPad.reset();
 
-btnNext.onclick=()=>{
-  qIndex++;
-  renderQuestion();
-  if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),80);
-};
+function commitQuizScoreAndAdvance(){
+  // 這一題才算完成
+  levelTotal++;
+  levelCorrect++;
 
-btnFinishLevel.onclick=()=>{
-  if(levelPassed()){
-    speakCoach("你通過了!");
-    stats.correct += levelCorrect;
-    stats.total += levelTotal;
-    saveJSON(K_STATS, stats);
-    updateStatsPills();
+  // 達到題數門檻後立即結算本關（不給下一題按鈕）
+  if(levelTotal>=settings.requiredQuestions){
+    const acc=percent(levelCorrect, levelTotal);
+    const pass = (acc>=settings.requiredAccuracy);
 
-    const pool=enabledPool();
-    levelIndex++;
-    if(levelIndex>=pool.length){
-      showAllClear();
+    if(pass){
+      speakCoach("你通過了!");
+      // 累積本機（可做成就）
+      stats.correct = (stats.correct||0) + levelCorrect;
+      stats.total = (stats.total||0) + levelTotal;
+      saveJSON(K_STATS, stats);
+
+      // 進下一關
+      levelIndex++;
+      const pool=enabledPool();
+      if(levelIndex>=pool.length){
+        // 全通關：若有班級座號則回傳
+        speakCoach("你通過了!");
+        tryPostFinal();
+        resetQuizUI();
+        return;
+      }
+
+      // reset level
+      levelCorrect=0; levelTotal=0;
+      setTimeout(()=>nextQuestion(), 250);
       return;
     }
-    qIndex=1; levelCorrect=0; levelTotal=0;
-    speakCoach("太好了，進入下一關。");
-    renderQuestion();
-    if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),200);
-  }else{
+
+    // 未通過：重做本關
     speakCoach("未通過，再試試看。");
-    qIndex=1; levelCorrect=0; levelTotal=0;
-    renderQuestion();
-    if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),120);
+    levelCorrect=0; levelTotal=0;
+    setTimeout(()=>nextQuestion(), 250);
+    return;
+  }
+
+  // 還沒到題數：直接下一題
+  setTimeout(()=>nextQuestion(), 180);
+}
+
+btnGradeQuizTrace.onclick=()=>{
+  if(!quizNeedTrace || !quizChosenOk) return;
+  const r=quizPad.computePass();
+  if(r.pass){
+    quizTraceResult.className="resultText ok";
+    quizTraceResult.textContent="✅ 通過";
+    speakCoach("你通過了!");
+    commitQuizScoreAndAdvance();
+  }else{
+    quizTraceResult.className="resultText bad";
+    quizTraceResult.textContent="❌ 未通過";
+    speakCoach("未通過，再試試看。");
+    // 不算完成，留在描寫階段
   }
 };
 
-btnBackReady.onclick=()=>setQuizReadyUI();
+btnReplayQuiz.onclick=()=>{ if(quizRunning) speakBopomofo(quizGoal); };
+btnResetQuiz.onclick=()=>{ startQuiz(); };
+btnStartQuiz.onclick=startQuiz;
 
-function showAllClear(){
-  quizTargetCard.style.display="none";
-  opts.style.display="none";
-  feedback.style.display="none";
-  quizActions.style.display="none";
-  quizHint.style.display="none";
+async function tryPostFinal(){
+  const sid = computedStudentId();
+  if(!sid) return; // ✅ 沒選班級座號：不回傳
 
-  allClear.style.display="block";
-  const pool=enabledPool();
-  allClearText.textContent="你已經把選定的 " + pool.length + " 個注音都通過了。";
-  speakCoach("你通過了!");
-}
-
-btnPlayAgain.onclick=()=>{ setQuizReadyUI(); };
-
-btnPost.onclick=async ()=>{
-  postStatus.textContent="回傳中…";
   const payload={
-    type:"bopomofo_checkpoint_result",
+    type:"bopomofo_quiz_result",
     timestamp: nowIso(),
     deviceId: getDeviceId(),
-    student: { studentId: student.studentId||"", studentName: student.studentName||"" },
+    student:{ id:sid, classNo: student.classNo||"", seatNo: student.seatNo||"", name: student.name||"" },
     settings:{
       requiredQuestions: settings.requiredQuestions,
       requiredAccuracy: settings.requiredAccuracy,
       enabledSymbols: enabledPool(),
-      mode:"checkpoint"
+      mode:"quiz_trace_gate"
     },
     summary:{
+      clearedLevels: enabledPool().length,
       totalLevels: enabledPool().length,
-      clearedLevels: enabledPool().length
     }
   };
-  const r=await postResult(payload);
-  if(r.skipped) postStatus.textContent="（尚未設定回傳端點：結果只保留在本機）";
-  else if(r.ok) postStatus.textContent="✅ 已回傳給老師";
-  else postStatus.textContent="⚠️ 回傳失敗（請檢查端點/網路/部署權限）";
-};
-
-btnStart.onclick=startQuiz;
+  await postResult(payload);
+}
 
 /** ====== INIT ====== **/
 (function init(){
+  // theme
   setTheme(loadTheme());
   themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
 
+  // voices might load later
   if(window.speechSynthesis){
     pickVoice();
     window.speechSynthesis.onvoiceschanged=()=>pickVoice();
   }
 
-  renderSymbolButtons();
-  bigSym.textContent=currentSymbol;
-  resetTraceCanvas();
+  // student
+  updateStudentHint();
 
+  // learn
+  renderSymbolButtons();
+  learnPad.reset();
+
+  // teacher
   renderTeacherSymbols();
   updateTeacherMeta();
-  updateQuizMeta();
 
-  updateStatsPills();
-  btnReplay.disabled=true;
-  setQuizReadyUI();
+  // quiz
+  resetQuizUI();
 
+  // default tab
   setTab("learn");
 })();
 </script>
