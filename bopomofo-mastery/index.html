@@ -275,7 +275,9 @@
 
 <script>
 /** ====== CONFIG ====== **/
-const RESULT_ENDPOINT = "https://script.google.com/macros/library/d/1zH-nvUYb6zg9fG7D2zmraSppJytvZWU8bGytAbFCmOkHbbLS4Bc15d68/1"; // ← 改成你的 Apps Script /exec URL
+// ✅ 這裡請貼你的 Apps Script /exec
+// 例如：https://script.google.com/macros/s/XXXXXXX/exec
+const RESULT_ENDPOINT = "";
 
 /** ====== STORAGE ====== **/
 const K_STATS="bopomofo_stats_plain_v1";
@@ -293,7 +295,7 @@ const BOPOMOFO = [
 const DEFAULT_SETTINGS = {
   requiredQuestions: 10,
   requiredAccuracy: 80,
-  enabledSymbols: [...BOPOMOFO],
+  enabledSymbols: BOPOMOFO.slice(),
   autoSpeakOnQuestion: true,
   lockAfterPick: true,
 };
@@ -303,25 +305,29 @@ function percent(c,t){return t>0?Math.round((c/t)*100):0}
 function nowIso(){return new Date().toISOString()}
 function loadJSON(k,f){try{const r=localStorage.getItem(k);return r?JSON.parse(r):f}catch{return f}}
 function saveJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
+
+// ✅ 修正：避免舊 iPad / 舊 Safari 因 optional chaining（?.）直接白畫面
 function getDeviceId(){
-  let v=localStorage.getItem(K_DEV);
+  var v=localStorage.getItem(K_DEV);
   if(v) return v;
-  v=(crypto?.randomUUID?.()||("dev_"+Math.random().toString(16).slice(2)));
+  if (window.crypto && typeof window.crypto.randomUUID === "function") v = window.crypto.randomUUID();
+  else v = "dev_" + Math.random().toString(16).slice(2);
   localStorage.setItem(K_DEV,v);
   return v;
 }
+
 function pickN(arr,n){
-  const a=[...arr];
+  const a=arr.slice();
   for(let i=a.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+    const t=a[i]; a[i]=a[j]; a[j]=t;
   }
   return a.slice(0,n);
 }
 function pick4(pool,ans){
   const set=new Set([ans]);
   while(set.size<4) set.add(pool[Math.floor(Math.random()*pool.length)]);
-  return pickN([...set],4);
+  return pickN(Array.from(set),4);
 }
 
 /** ====== THEME ====== **/
@@ -344,13 +350,13 @@ function pickVoice(){
   const voices=synth.getVoices()||[];
   const hints=["Yating","Ya-Ting","Mei-Jia","Google 國語","Google Chinese","Microsoft"];
   const candidates=voices
-    .filter(v=>(v.lang||"").toLowerCase().includes("zh"))
+    .filter(v=>(v.lang||"").toLowerCase().indexOf("zh")>=0)
     .sort((a,b)=>{
-      const aTW=(a.lang||"").toLowerCase().includes("tw")?0:1;
-      const bTW=(b.lang||"").toLowerCase().includes("tw")?0:1;
+      const aTW=(a.lang||"").toLowerCase().indexOf("tw")>=0?0:1;
+      const bTW=(b.lang||"").toLowerCase().indexOf("tw")>=0?0:1;
       if(aTW!==bTW) return aTW-bTW;
-      const as=hints.reduce((s,h)=>s+((a.name||"").includes(h)?1:0),0);
-      const bs=hints.reduce((s,h)=>s+((b.name||"").includes(h)?1:0),0);
+      const as=hints.reduce((s,h)=>s+((a.name||"").indexOf(h)>=0?1:0),0);
+      const bs=hints.reduce((s,h)=>s+((b.name||"").indexOf(h)>=0?1:0),0);
       return bs-as;
     });
   pickedVoice=candidates[0]||voices[0]||null;
@@ -386,7 +392,7 @@ async function postResult(payload){
 let settings=loadJSON(K_SETTINGS, DEFAULT_SETTINGS);
 settings.requiredQuestions=clamp(+settings.requiredQuestions||10,1,100);
 settings.requiredAccuracy=clamp(+settings.requiredAccuracy||80,1,100);
-settings.enabledSymbols=(Array.isArray(settings.enabledSymbols)&&settings.enabledSymbols.length)?settings.enabledSymbols.filter(x=>BOPOMOFO.includes(x)):[...BOPOMOFO];
+settings.enabledSymbols=(Array.isArray(settings.enabledSymbols)&&settings.enabledSymbols.length)?settings.enabledSymbols.filter(x=>BOPOMOFO.indexOf(x)>=0):BOPOMOFO.slice();
 settings.autoSpeakOnQuestion=!!settings.autoSpeakOnQuestion;
 settings.lockAfterPick=!!settings.lockAfterPick;
 
@@ -515,11 +521,9 @@ function resetTraceCanvas(){
   traceResult.className="hint";
   traceResult.textContent="畫完按「完成評分」。";
 
-  // guide
   ctx.clearRect(0,0,SIZE,SIZE);
   ctx.fillStyle="#fff"; ctx.fillRect(0,0,SIZE,SIZE);
 
-  // grid
   ctx.strokeStyle="rgba(15,23,42,0.08)";
   ctx.lineWidth=1;
   for(let i=1;i<4;i++){
@@ -528,14 +532,12 @@ function resetTraceCanvas(){
     ctx.beginPath(); ctx.moveTo(0,p); ctx.lineTo(SIZE,p); ctx.stroke();
   }
 
-  // symbol (light gray)
   ctx.fillStyle="rgba(15,23,42,0.18)";
   ctx.textAlign="center";
   ctx.textBaseline="middle";
   ctx.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
   ctx.fillText(currentSymbol, SIZE/2, SIZE/2+10);
 
-  // border
   ctx.strokeStyle="rgba(15,23,42,0.12)";
   ctx.lineWidth=2;
   ctx.strokeRect(8,8,SIZE-16,SIZE-16);
@@ -558,7 +560,7 @@ traceCanvas.addEventListener("pointermove",(e)=>{
   const p=posFromEvent(e);
   if(!last){last=p;return;}
   ctx.strokeStyle="#ef4444";
-  ctx.lineWidth=20; // 加粗
+  ctx.lineWidth=20;
   ctx.lineCap="round";
   ctx.lineJoin="round";
   ctx.beginPath();
@@ -574,7 +576,6 @@ traceCanvas.addEventListener("pointercancel",endDraw);
 btnClear.onclick=resetTraceCanvas;
 
 function computeTracePass(){
-  // build mask canvas
   const mask=document.createElement("canvas");
   mask.width=SIZE; mask.height=SIZE;
   const m=mask.getContext("2d");
@@ -584,7 +585,7 @@ function computeTracePass(){
   m.font="220px system-ui, -apple-system, 'Noto Sans TC', 'Segoe UI', Roboto, Arial";
   m.fillText(currentSymbol, SIZE/2, SIZE/2+10);
   m.strokeStyle="#000";
-  m.lineWidth=34; // 容錯更寬
+  m.lineWidth=34;
   m.strokeText(currentSymbol, SIZE/2, SIZE/2+10);
 
   const md=m.getImageData(0,0,SIZE,SIZE).data;
@@ -634,20 +635,20 @@ function saveSettings(){
   updateQuizMeta();
 }
 function updateTeacherMeta(){
-  enabledCount.textContent = `已選符號：${settings.enabledSymbols.length} / ${BOPOMOFO.length}`;
+  enabledCount.textContent = "已選符號：" + settings.enabledSymbols.length + " / " + BOPOMOFO.length;
   epState.textContent = RESULT_ENDPOINT ? "已設定" : "未設定（目前只保留在本機）";
 }
 function renderTeacherSymbols(){
   teacherSym.innerHTML="";
   BOPOMOFO.forEach(s=>{
-    const on=settings.enabledSymbols.includes(s);
+    const on=settings.enabledSymbols.indexOf(s)>=0;
     const b=document.createElement("button");
     b.className="symBtn"+(on?" on":"");
     b.textContent=s;
     b.onclick=()=>{
       const set=new Set(settings.enabledSymbols);
       if(set.has(s)) set.delete(s); else set.add(s);
-      settings.enabledSymbols=[...set];
+      settings.enabledSymbols=Array.from(set);
       saveJSON(K_SETTINGS, settings);
       renderTeacherSymbols();
       updateTeacherMeta();
@@ -656,7 +657,7 @@ function renderTeacherSymbols(){
     teacherSym.appendChild(b);
   });
 }
-btnAll.onclick=()=>{settings.enabledSymbols=[...BOPOMOFO]; saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
+btnAll.onclick=()=>{settings.enabledSymbols=BOPOMOFO.slice(); saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
 btnNone.onclick=()=>{settings.enabledSymbols=[]; saveJSON(K_SETTINGS,settings); renderTeacherSymbols(); updateTeacherMeta(); updateQuizMeta();};
 
 setRQ.value=settings.requiredQuestions;
@@ -669,23 +670,21 @@ setAutoSpeak.onchange=saveSettings;
 setLock.onchange=saveSettings;
 
 /** ====== QUIZ ====== **/
-let phase="ready"; // ready | inLevel | allClear
+let phase="ready";
 let levelIndex=0;
 let qIndex=0;
 let levelCorrect=0;
 let levelTotal=0;
 let locked=false;
-let feedbackState=null;
 
 function enabledPool(){
-  const p=(settings.enabledSymbols && settings.enabledSymbols.length)?settings.enabledSymbols:[...BOPOMOFO];
-  return p;
+  return (settings.enabledSymbols && settings.enabledSymbols.length)?settings.enabledSymbols:BOPOMOFO.slice();
 }
 
 function updateStatsPills(){
-  pCorrect.textContent=`答對 ${stats.correct}`;
-  pTotal.textContent=`總題數 ${stats.total}`;
-  pAcc.textContent=`正確率 ${percent(stats.correct,stats.total)}%`;
+  pCorrect.textContent="答對 " + stats.correct;
+  pTotal.textContent="總題數 " + stats.total;
+  pAcc.textContent="正確率 " + percent(stats.correct,stats.total) + "%";
 }
 btnClearStats.onclick=()=>{
   stats={correct:0,total:0};
@@ -694,8 +693,8 @@ btnClearStats.onclick=()=>{
 };
 
 function updateQuizMeta(){
-  quizStd.textContent=`本關標準：至少 ${settings.requiredQuestions} 題、正確率至少 ${settings.requiredAccuracy}%`;
-  quizTotalLevels.textContent=`共 ${enabledPool().length} 關（老師可在教師頁選關卡範圍）`;
+  quizStd.textContent="本關標準：至少 " + settings.requiredQuestions + " 題、正確率至少 " + settings.requiredAccuracy + "%";
+  quizTotalLevels.textContent="共 " + enabledPool().length + " 關（老師可在教師頁選關卡範圍）";
 }
 
 function setQuizReadyUI(){
@@ -714,12 +713,6 @@ function setQuizReadyUI(){
 }
 
 function startQuiz(){
-  if(!student.studentId || student.studentId.trim().length===0){
-    speakCoach("請先輸入座號或代號。");
-    setTab("learn");
-    studentId.focus();
-    return;
-  }
   const pool=enabledPool();
   if(pool.length===0){
     speakCoach("老師還沒有選題庫喔。");
@@ -728,7 +721,7 @@ function startQuiz(){
   }
 
   phase="inLevel";
-  levelIndex=0; qIndex=1; levelCorrect=0; levelTotal=0; locked=false; feedbackState=null;
+  levelIndex=0; qIndex=1; levelCorrect=0; levelTotal=0; locked=false;
 
   btnStart.style.display="none";
   btnBackReady.style.display="inline-block";
@@ -760,13 +753,12 @@ function renderQuestion(){
   const goal=currentLevelSymbol();
   const totalLevels=pool.length;
 
-  pillLevel.textContent=`第 ${levelIndex+1} / ${totalLevels} 關`;
-  pillGoal.textContent=`目標：${goal}`;
-  pillDone.textContent=`已做 ${levelTotal} 題`;
-  pillAcc.textContent=`正確率 ${percent(levelCorrect,levelTotal)}%`;
+  pillLevel.textContent="第 " + (levelIndex+1) + " / " + totalLevels + " 關";
+  pillGoal.textContent="目標：" + goal;
+  pillDone.textContent="已做 " + levelTotal + " 題";
+  pillAcc.textContent="正確率 " + percent(levelCorrect,levelTotal) + "%";
   quizBigSym.textContent=goal;
 
-  // options
   const ops=pick4(pool, goal);
   opts.innerHTML="";
   ops.forEach(s=>{
@@ -780,7 +772,6 @@ function renderQuestion(){
   feedback.textContent="先聽，再選。";
   feedback.className="banner";
   locked=false;
-  feedbackState=null;
 
   btnNext.style.display = (levelTotal>=settings.requiredQuestions) ? "none" : "inline-block";
   btnFinishLevel.style.display = (levelTotal>=settings.requiredQuestions) ? "inline-block" : "none";
@@ -788,7 +779,7 @@ function renderQuestion(){
 
 function applyFeedbackUI(chosen){
   const goal=currentLevelSymbol();
-  const children=[...opts.children];
+  const children=Array.from(opts.children);
   children.forEach(btn=>{
     const s=btn.textContent;
     btn.classList.remove("ok","bad","dim");
@@ -806,18 +797,10 @@ function pickAnswer(chosen){
   levelTotal++;
   if(ok) levelCorrect++;
 
-  feedbackState={ok,chosen};
   if(settings.lockAfterPick) locked=true;
 
   applyFeedbackUI(chosen);
-
-  if(ok){
-    feedback.textContent="✅ 答對！";
-  }else{
-    feedback.textContent="❌ 未通過，再試試看。";
-  }
-
-  // 強化：都再念一次正確答案
+  feedback.textContent = ok ? "✅ 答對！" : "❌ 未通過，再試試看。";
   setTimeout(()=>speakBopomofo(goal), 120);
 
   btnNext.style.display = (levelTotal>=settings.requiredQuestions) ? "none" : "inline-block";
@@ -836,29 +819,23 @@ btnNext.onclick=()=>{
 btnFinishLevel.onclick=()=>{
   if(levelPassed()){
     speakCoach("你通過了!");
-    // 累積到本機統計（成就感）
     stats.correct += levelCorrect;
     stats.total += levelTotal;
     saveJSON(K_STATS, stats);
     updateStatsPills();
 
-    // next level
     const pool=enabledPool();
     levelIndex++;
     if(levelIndex>=pool.length){
-      // all clear
-      phase="allClear";
       showAllClear();
       return;
     }
-    // reset this new level
     qIndex=1; levelCorrect=0; levelTotal=0;
     speakCoach("太好了，進入下一關。");
     renderQuestion();
     if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),200);
   }else{
     speakCoach("未通過，再試試看。");
-    // reset current level
     qIndex=1; levelCorrect=0; levelTotal=0;
     renderQuestion();
     if(settings.autoSpeakOnQuestion) setTimeout(()=>speakBopomofo(currentLevelSymbol()),120);
@@ -876,13 +853,11 @@ function showAllClear(){
 
   allClear.style.display="block";
   const pool=enabledPool();
-  allClearText.textContent=`你已經把選定的 ${pool.length} 個注音都通過了。`;
+  allClearText.textContent="你已經把選定的 " + pool.length + " 個注音都通過了。";
   speakCoach("你通過了!");
 }
 
-btnPlayAgain.onclick=()=>{
-  setQuizReadyUI();
-};
+btnPlayAgain.onclick=()=>{ setQuizReadyUI(); };
 
 btnPost.onclick=async ()=>{
   postStatus.textContent="回傳中…";
@@ -890,7 +865,7 @@ btnPost.onclick=async ()=>{
     type:"bopomofo_checkpoint_result",
     timestamp: nowIso(),
     deviceId: getDeviceId(),
-    student,
+    student: { studentId: student.studentId||"", studentName: student.studentName||"" },
     settings:{
       requiredQuestions: settings.requiredQuestions,
       requiredAccuracy: settings.requiredAccuracy,
@@ -912,32 +887,26 @@ btnStart.onclick=startQuiz;
 
 /** ====== INIT ====== **/
 (function init(){
-  // theme
   setTheme(loadTheme());
   themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
 
-  // voices might load later
   if(window.speechSynthesis){
     pickVoice();
     window.speechSynthesis.onvoiceschanged=()=>pickVoice();
   }
 
-  // render symbols
   renderSymbolButtons();
   bigSym.textContent=currentSymbol;
   resetTraceCanvas();
 
-  // teacher
   renderTeacherSymbols();
   updateTeacherMeta();
   updateQuizMeta();
 
-  // stats pills
   updateStatsPills();
   btnReplay.disabled=true;
   setQuizReadyUI();
 
-  // default tab
   setTab("learn");
 })();
 </script>
