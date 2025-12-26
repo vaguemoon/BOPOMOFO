@@ -3,1011 +3,266 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>注音符號單音｜精熟練習</title>
+  <title>太平國小一年級小朋友學習工具</title>
+  <meta name="description" content="太平國小一年級小朋友學習工具：注音符號學習與練習 APP 列表。" />
   <style>
     :root{
-      --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --sub:#475569; --border:#e2e8f0;
-      --soft:#f1f5f9; --btn:#0f172a; --btnText:#fff; --ghostBg:#fff; --ghostText:#0f172a; --ghostBorder:#e2e8f0;
-      --ok:#10b981; --bad:#ef4444;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --text:#0f172a;
+      --sub:#475569;
+      --border:#e2e8f0;
+      --soft:#f1f5f9;
+      --btn:#0f172a;
+      --btnText:#fff;
+      --ghostBg:#fff;
+      --ghostText:#0f172a;
+      --ghostBorder:#e2e8f0;
+      --accent:#10b981;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
     }
     [data-theme="dark"]{
-      --bg:#020617; --card:#0f172a; --text:#f8fafc; --sub:#cbd5e1; --border:#334155;
-      --soft:#1e293b; --btn:#34d399; --btnText:#020617; --ghostBg:#0f172a; --ghostText:#f8fafc; --ghostBorder:#334155;
-      --ok:#34d399; --bad:#fb7185;
+      --bg:#020617;
+      --card:#0f172a;
+      --text:#f8fafc;
+      --sub:#cbd5e1;
+      --border:#334155;
+      --soft:#111c33;
+      --btn:#34d399;
+      --btnText:#020617;
+      --ghostBg:#0f172a;
+      --ghostText:#f8fafc;
+      --ghostBorder:#334155;
+      --accent:#34d399;
+      --shadow: 0 18px 42px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC","Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text)}
-    .wrap{max-width:1100px;margin:0 auto;padding:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .space{height:10px}
-    .title{font-size:18px;font-weight:900;letter-spacing:-0.02em}
-    .subtitle{color:var(--sub);font-weight:700;font-size:12px}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:12px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
-
-    .btn{border:0;border-radius:18px;padding:12px 16px;font-weight:900;font-size:16px;cursor:pointer}
-    .btnPrimary{background:var(--btn);color:var(--btnText)}
-    .btnGhost{background:var(--ghostBg);color:var(--ghostText);border:1px solid var(--ghostBorder)}
-    .btnIcon{padding:12px 14px;min-width:56px;font-size:22px;display:inline-flex;align-items:center;justify-content:center}
-    .btn:active{transform:scale(.99)}
-    .tabs .btn{min-width:92px}
-
-    .hint{color:var(--sub);font-weight:800;font-size:12px}
-
-    /* 學生資料：極簡、並排 */
-    select,input{width:100%;border-radius:14px;border:1px solid var(--border);padding:8px 10px;font-size:15px;font-weight:900;background:var(--bg);color:var(--text);outline:none}
-    .studentBar{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;justify-content:center}
-    .studentBar .mini{width:92px}
-    .studentBar .name{min-width:150px;flex:1 1 150px}
-    .label{font-size:12px;font-weight:900;color:var(--sub);margin-bottom:4px}
-
-    /* 注音列表 */
-    .symGrid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
-    .symBtn{border-radius:16px;border:1px solid var(--border);background:var(--card);padding:10px 14px;font-size:20px;font-weight:900;cursor:pointer}
-    .symBtn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
-    [data-theme="dark"] .symBtn.on{background:var(--ok);color:#020617;border-color:var(--ok)}
-
-    /* 畫布 */
-    .canvasBox{display:flex;flex-direction:column;align-items:center;gap:10px}
-    canvas{border-radius:18px;border:1px solid var(--border);background:#fff;touch-action:none}
-
-    .resultBox{width:100%;max-width:360px;border-radius:18px;border:1px solid var(--border);padding:10px;background:var(--card)}
-    .resultText{margin-top:6px;font-size:26px;font-weight:1000}
-    .ok{color:var(--ok)} .bad{color:var(--bad)}
-
-    /* 測驗：四選一一列 */
-    .quizOnly{max-width:460px;margin:0 auto}
-    .quizTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-
-    .qOpts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-    .opt{border-radius:18px;border:1px solid var(--border);background:var(--card);padding:14px 6px;font-size:40px;font-weight:1000;cursor:pointer}
-    .opt.dim{opacity:.55}
-    .opt.ok{border-color:var(--ok);background:color-mix(in srgb, var(--ok) 12%, var(--card))}
-    .opt.bad{border-color:var(--bad);background:color-mix(in srgb, var(--bad) 10%, var(--card))}
-
-    /* 開始遊戲按鈕（更像遊戲） */
-    .startBtn{
-      display:inline-flex;align-items:center;gap:10px;
-      padding:14px 16px; border-radius:22px;
-      font-size:18px; font-weight:1000;
-      box-shadow:0 10px 30px rgba(0,0,0,.12);
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Noto Sans TC","Segoe UI",Roboto,Arial;
+      background:var(--bg);
+      color:var(--text);
     }
-    .startIcon{font-size:26px;line-height:1}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .top{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .title{
+      font-size:22px;font-weight:1000;letter-spacing:-0.02em;
+    }
+    .subtitle{
+      margin-top:6px;color:var(--sub);font-weight:800;font-size:14px;
+      max-width:56ch;
+    }
+    .btn{
+      border:0;border-radius:18px;padding:12px 14px;
+      font-weight:1000;font-size:16px;cursor:pointer;
+      display:inline-flex;align-items:center;gap:10px;
+    }
+    .btnGhost{background:var(--ghostBg);color:var(--ghostText);border:1px solid var(--ghostBorder)}
+    .btnPrimary{background:var(--btn);color:var(--btnText)}
+    .btn:active{transform:scale(.99)}
+    .space{height:14px}
+
+    .hero{
+      background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 10%, var(--card)), var(--card));
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:16px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .heroGrid{
+      display:grid;gap:12px;
+      grid-template-columns:1fr;
+      align-items:center;
+    }
+    @media(min-width:860px){
+      .heroGrid{grid-template-columns:1.2fr .8fr}
+    }
+    .heroBadges{display:flex;gap:10px;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border-radius:999px;background:var(--soft);
+      padding:8px 12px;font-weight:1000;font-size:13px;color:var(--text);
+      border:1px solid var(--border);
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    @media(min-width:720px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media(min-width:1040px){ .grid{grid-template-columns:repeat(3,1fr)} }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:14px;
+      box-shadow:0 1px 0 rgba(0,0,0,.03);
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .cardHead{display:flex;align-items:center;gap:10px}
+    .appIcon{
+      width:44px;height:44px;border-radius:16px;
+      background:color-mix(in srgb, var(--accent) 16%, var(--soft));
+      border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      flex:0 0 auto;
+    }
+    .appTitle{font-weight:1000;font-size:16px}
+    .appDesc{color:var(--sub);font-weight:800;font-size:13px;line-height:1.4}
+    .cardActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+    a.btn{ text-decoration:none; }
+
+    .miniArt{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      align-items:center;
+      justify-items:center;
+      opacity:.95;
+    }
+    .artBox{
+      width:100%;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background:var(--soft);
+      padding:10px;
+      display:flex;align-items:center;justify-content:center;
+    }
+        /* 卡片內容整體置中 */
+    .card{
+    align-items: center;     /* 水平置中 */
+    text-align: center;      /* 文字置中 */
+    }
+
+    /* 卡片標題列改成直向置中 */
+    .cardHead{
+    flex-direction: column;  /* 由橫排改直排 */
+    gap: 6px;
+    }
+
+    /* 按鈕列置中 */
+    .cardActions{
+    justify-content: center;
+    }
+
+    .footer{
+      margin-top:14px;
+      border-radius:22px;
+      border:1px solid var(--border);
+      background:var(--card);
+      padding:14px;
+      color:var(--sub);
+      font-weight:800;
+      font-size:12px;
+      line-height:1.5;
+    }
+    .hint{
+      color:var(--sub);
+      font-weight:800;
+      font-size:12px;
+    }
+    .kbd{
+      font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      background:var(--soft);
+      border:1px solid var(--border);
+      border-radius:10px;
+      padding:2px 8px;
+      color:var(--text);
+      font-weight:900;
+    }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="row" style="justify-content:space-between;align-items:flex-end">
-    <div>
-      <div class="title">注音符號單音｜精熟練習</div>
-      <div class="subtitle">學習：點注音就發音｜測驗：選對 + 描寫通過才算完成</div>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="title">太平國小一年級小朋友學習工具</div>
+      </div>
+      <button id="themeBtn" class="btn btnGhost" aria-label="切換深色模式">🌙 深色</button>
     </div>
-    <div class="row" style="align-items:center">
-      <button id="themeBtn" class="btn btnGhost">🌙</button>
-    </div>
+    <div class="space"></div>
+    <div class="space"></div>
+    <h2 id="apps" style="margin:0;font-size:16px;font-weight:1000">學習 APP 列表</h2>
+    <div class="space"></div>
+
+    <section class="grid" aria-label="APP 列表">
+      <!-- APP 1：你的注音精熟練習（請改成你的實際路徑） -->
+      <article class="card">
+        <div class="cardHead">
+          <div class="appIcon" aria-hidden="true">ㄅ</div>
+          <div>
+            <div class="appTitle">注音符號單音練習</div>
+          </div>
+        <div class="cardActions">
+          <!-- 這裡改成你實際的檔名，例如 bopomofo.html 或 /bopomofo/index.html -->
+          <a class="btn btnPrimary" href="./single/index.html">開始 ▶</a>
+        </div>
+      </article>
+
+      <!-- APP 2：空白範本（你之後可填） -->
+      <article class="card">
+        <div class="cardHead">
+          <div class="appIcon" aria-hidden="true">🔤</div>
+          <div>
+            <div class="appTitle">注音聽音小遊戲（預留）</div>
+            <div class="hint">可放你之後做的新工具</div>
+          </div>
+        </div>
+        <div class="appDesc">
+          例：聽音選符號、找相同音、配對卡片等。這張卡先留著，之後把連結換掉。
+        </div>
+        <div class="cardActions">
+          <a class="btn btnGhost" href="#" onclick="alert('這個工具還在準備中🙂');return false;">尚未開放</a>
+        </div>
+      </article>
+
+      <!-- APP 3：空白範本（你之後可填） -->
+      <article class="card">
+        <div class="cardHead">
+          <div class="appIcon" aria-hidden="true">🎯</div>
+          <div>
+            <div class="appTitle">注音複習任務卡（預留）</div>
+            <div class="hint">每天 3 分鐘</div>
+          </div>
+        </div>
+        <div class="appDesc">
+          例：老師指定「今天練 5 個注音」，小朋友完成就蓋章（可做成很可愛的章）。
+        </div>
+        <div class="cardActions">
+          <a class="btn btnGhost" href="#" onclick="alert('這個工具還在準備中🙂');return false;">尚未開放</a>
+        </div>
+      </article>
+    </section>
+
+    <div class="space"></div>
+
+
   </div>
 
-  <div class="space"></div>
+  <script>
+    // 深色模式：乾淨、無框架
+    const K_THEME = "tp1_theme_v1";
+    const themeBtn = document.getElementById("themeBtn");
 
-  <div class="row tabs" style="justify-content:center">
-    <button class="btn btnPrimary" id="tabLearn">學習</button>
-    <button class="btn btnGhost" id="tabQuiz">測驗</button>
-    <button class="btn btnGhost" id="tabTeacher">教師</button>
-  </div>
-
-  <div class="space"></div>
-
-  <!-- STUDENT：縮到很小，不吃畫面 -->
-  <div class="card" style="padding:10px">
-    <div class="studentBar">
-      <div class="mini">
-        <div class="label">班級</div>
-        <select id="studentClass" aria-label="班級"><option value="">—</option></select>
-      </div>
-      <div class="mini">
-        <div class="label">座號</div>
-        <select id="studentSeat" aria-label="座號"><option value="">—</option></select>
-      </div>
-      <div class="name">
-        <div class="label">姓名（可不填）</div>
-        <input id="studentName" maxlength="20" />
-      </div>
-      <button id="btnClearStudent" class="btn btnGhost btnIcon" title="清除">🧹</button>
-    </div>
-    <div class="hint" id="studentHint" style="margin-top:6px;text-align:center"></div>
-  </div>
-
-  <div class="space"></div>
-
-  <!-- LEARN：畫布置中，注音列表在下方 -->
-  <section id="pageLearn">
-    <div class="card" style="max-width:460px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="font-weight:1000">描寫練習</div>
-        <button id="btnSpeakLearn" class="btn btnPrimary btnIcon" title="聽">🔊</button>
-      </div>
-      <div class="space"></div>
-      <div class="canvasBox">
-        <canvas id="learnCanvas" width="320" height="320"></canvas>
-        <div class="resultBox"><div id="learnResult" class="hint"></div></div>
-        <div class="row" style="justify-content:center">
-          <button id="btnClearLearn" class="btn btnGhost btnIcon" title="清除">🧽</button>
-          <button id="btnGradeLearn" class="btn btnPrimary btnIcon" title="完成">✅</button>
-        </div>
-      </div>
-      <div class="space"></div>
-      <div class="symGrid" id="symList"></div>
-    </div>
-  </section>
-
-  <!-- QUIZ：四選一一列 + 選對後描寫；做滿題數顯示結果 -->
-  <section id="pageQuiz" style="display:none">
-    <div class="quizOnly">
-      <div class="card">
-        <div class="quizTop">
-          <button id="btnStartQuiz" class="btn btnPrimary startBtn" title="開始遊戲">
-            <span class="startIcon">🎮</span><span>開始</span>
-          </button>
-          <div class="row">
-            <button id="btnReplayQuiz" class="btn btnGhost btnIcon" title="再聽一次" disabled>🔊</button>
-            <button id="btnResetQuiz" class="btn btnGhost btnIcon" title="重來" style="display:none">🔄</button>
-          </div>
-        </div>
-
-        <div class="space"></div>
-
-        <div id="quizMain" style="display:none">
-          <div class="card" id="quizProgressCard" style="text-align:center">
-            <div id="quizLights" style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap"></div>
-          </div>
-          <div class="space"></div>
-
-          <div class="qOpts" id="quizOpts"></div>
-          <div id="quizMsg" class="hint" style="text-align:center;min-height:16px"></div>
-
-          <div class="space"></div>
-
-          <div class="card" id="quizTraceCard" style="display:none">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div style="font-weight:1000">描寫</div>
-              <div class="row">
-                <button id="btnClearQuizTrace" class="btn btnGhost btnIcon" title="清除">🧽</button>
-                <button id="btnGradeQuizTrace" class="btn btnPrimary btnIcon" title="完成">✅</button>
-              </div>
-            </div>
-            <div class="space"></div>
-            <div class="canvasBox">
-              <canvas id="quizCanvas" width="320" height="320"></canvas>
-              <div class="resultBox"><div id="quizTraceResult" class="hint"></div></div>
-            </div>
-          </div>
-
-          <div class="space"></div>
-
-          <div class="card" id="quizResultCard" style="display:none;text-align:center">
-            <div id="quizResultIcon" style="font-size:56px;line-height:1">✅</div>
-            <div id="quizResultText" style="font-weight:1000;font-size:22px;margin-top:8px"></div>
-            <div id="quizResultSub" class="hint" style="margin-top:6px"></div>
-            <div class="space"></div>
-            <button id="btnRestartAfterResult" class="btn btnPrimary btnIcon" title="再玩一次">🔄</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TEACHER -->
-  <section id="pageTeacher" style="display:none">
-    <div class="card" style="max-width:640px;margin:0 auto">
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
-        <div>
-          <div style="font-weight:1000">教師設定（精熟標準）</div>
-          <div class="hint">設定會儲存在此裝置</div>
-        </div>
-        <div class="row">
-          <button id="btnAll" class="btn btnGhost">全選</button>
-          <button id="btnNone" class="btn btnGhost">全不選</button>
-        </div>
-      </div>
-
-      <div class="space"></div>
-      <div class="row">
-        <div style="flex:1;min-width:160px">
-          <div class="label">題數門檻</div>
-          <input id="setRQ" type="number" min="1" max="100" />
-        </div>
-        <div style="flex:1;min-width:160px">
-          <div class="label">正確率門檻（%）</div>
-          <input id="setRA" type="number" min="1" max="100" />
-        </div>
-      </div>
-
-      <div class="space"></div>
-      <div class="row">
-        <label class="hint" style="display:flex;align-items:center;gap:8px"><input id="setAutoSpeak" type="checkbox" /> 每題開始自動播一次</label>
-        <label class="hint" style="display:flex;align-items:center;gap:8px"><input id="setLock" type="checkbox" /> 選對後鎖定選項</label>
-      </div>
-
-      <div class="space"></div>
-      <div class="hint" id="enabledCount">已選符號：0</div>
-      <div class="space"></div>
-      <div class="symGrid" id="teacherSym"></div>
-
-      <div class="space"></div>
-      <div class="hint">結果回傳端點（/exec）：</div>
-      <input id="endpointInput" placeholder="貼上 Apps Script /exec（可留空）" />
-      <div class="hint" style="margin-top:6px" id="epState"></div>
-
-      <div class="space"></div>
-      <div class="hint">描寫判定（更寬鬆＝比較容易過）</div>
-      <div class="row">
-        <div style="flex:1;min-width:160px">
-          <div class="label">通過分數</div>
-          <input id="setTracePass" type="number" min="40" max="90" />
-        </div>
-        <div style="flex:1;min-width:160px">
-          <div class="label">容錯寬度</div>
-          <input id="setTraceTol" type="number" min="24" max="80" />
-        </div>
-        <div style="flex:1;min-width:160px">
-          <div class="label">紅線粗細</div>
-          <input id="setTraceW" type="number" min="14" max="34" />
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<script>
-/** ====== STORAGE ====== **/
-const K_STATS="bopomofo_stats_plain_v3";
-const K_SETTINGS="bopomofo_teacher_plain_v3";
-const K_STUDENT="bopomofo_student_plain_v3";
-const K_THEME="bopomofo_theme_plain_v3";
-const K_DEV="bopomofo_device_plain_v3";
-const K_ENDPOINT="bopomofo_endpoint_plain_v1";
-
-/** ====== DATA ====== **/
-const BOPOMOFO = [
- "ㄅ","ㄆ","ㄇ","ㄈ","ㄉ","ㄊ","ㄋ","ㄌ","ㄍ","ㄎ","ㄏ","ㄐ","ㄑ","ㄒ","ㄓ","ㄔ","ㄕ","ㄖ","ㄗ","ㄘ","ㄙ",
- "ㄧ","ㄨ","ㄩ","ㄚ","ㄛ","ㄜ","ㄝ","ㄞ","ㄟ","ㄠ","ㄡ","ㄢ","ㄣ","ㄤ","ㄥ","ㄦ",
-];
-
-const DEFAULT_SETTINGS = {
-  requiredQuestions: 10,
-  requiredAccuracy: 80,
-  enabledSymbols: BOPOMOFO.slice(),
-  autoSpeakOnQuestion: true,
-  lockAfterPick: true,
-  tracePassScore: 52,
-  traceToleranceStroke: 38,
-  traceLineWidth: 22,
-};
-
-function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
-function percent(c,t){return t>0?Math.round((c/t)*100):0}
-function nowIso(){return new Date().toISOString()}
-function loadJSON(k,f){try{const r=localStorage.getItem(k);return r?JSON.parse(r):f}catch{return f}}
-function saveJSON(k,v){localStorage.setItem(k,JSON.stringify(v))}
-
-function getDeviceId(){
-  let v=localStorage.getItem(K_DEV);
-  if(v) return v;
-  v=(window.crypto&&typeof window.crypto.randomUUID==="function")?window.crypto.randomUUID():"dev_"+Math.random().toString(16).slice(2);
-  localStorage.setItem(K_DEV,v);
-  return v;
-}
-
-function shuffle(arr){
-  const a=arr.slice();
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
-  }
-  return a;
-}
-function pick4(pool, ans){
-  const set=new Set([ans]);
-  while(set.size<4) set.add(pool[Math.floor(Math.random()*pool.length)]);
-  return shuffle(Array.from(set)).slice(0,4);
-}
-function randOne(arr){
-  return arr[Math.floor(Math.random()*arr.length)];
-}
-
-/** ====== THEME ====== **/
-function loadTheme(){
-  const t=localStorage.getItem(K_THEME);
-  if(t==="dark"||t==="light") return t;
-  return (window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";
-}
-function setTheme(t){
-  document.documentElement.dataset.theme=t;
-  localStorage.setItem(K_THEME,t);
-  const themeBtn=document.getElementById("themeBtn");
-  if(themeBtn) themeBtn.textContent=(t==="dark")?"☀️":"🌙";
-}
-
-/** ====== VOICE ====== **/
-let pickedVoice=null;
-function pickVoice(){
-  const synth=window.speechSynthesis;
-  if(!synth) return;
-  const voices=synth.getVoices()||[];
-  const hints=["Yating","Ya-Ting","Mei-Jia","Google 國語","Google Chinese","Microsoft"];
-  const candidates=voices
-    .filter(v=>(v.lang||"").toLowerCase().includes("zh"))
-    .sort((a,b)=>{
-      const aTW=(a.lang||"").toLowerCase().includes("tw")?0:1;
-      const bTW=(b.lang||"").toLowerCase().includes("tw")?0:1;
-      if(aTW!==bTW) return aTW-bTW;
-      const as=hints.reduce((s,h)=>s+((a.name||"").includes(h)?1:0),0);
-      const bs=hints.reduce((s,h)=>s+((b.name||"").includes(h)?1:0),0);
-      return bs-as;
+    function loadTheme(){
+      const t = localStorage.getItem(K_THEME);
+      if(t==="dark"||t==="light") return t;
+      return (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light";
+    }
+    function setTheme(t){
+      document.documentElement.dataset.theme = t;
+      localStorage.setItem(K_THEME, t);
+      themeBtn.textContent = (t==="dark") ? "☀️ 亮色" : "🌙 深色";
+    }
+    setTheme(loadTheme());
+    themeBtn.addEventListener("click", ()=>{
+      setTheme(document.documentElement.dataset.theme==="dark" ? "light" : "dark");
     });
-  pickedVoice=candidates[0]||voices[0]||null;
-}
-
-// coach 不 cancel（避免被切掉）；注音可 interrupt（重播很即時）
-function speak(text, kind, opts){
-  const synth=window.speechSynthesis;
-  if(!synth) return null;
-  if(!pickedVoice) pickVoice();
-
-  const interrupt = opts && typeof opts.interrupt==="boolean" ? opts.interrupt : (kind!=="coach");
-  if(interrupt) synth.cancel();
-
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang="zh-TW";
-  if(pickedVoice) u.voice=pickedVoice;
-  if(kind==="coach"){u.rate=0.9;u.pitch=1.15}else{u.rate=0.85;u.pitch=1.05}
-  synth.speak(u);
-  return u;
-}
-function speakAsync(text, kind, opts){
-  return new Promise((resolve)=>{
-    const u=speak(text, kind, opts);
-    if(!u){ resolve(); return; }
-    u.onend=()=>resolve();
-    u.onerror=()=>resolve();
-  });
-}
-function speakBopomofo(sym){ speak(sym,"bopomofo",{interrupt:true}); }
-function speakCoachAsync(msg){ return speakAsync(msg,"coach",{interrupt:false}); }
-
-/** ====== FAIL BEEP ====== **/
-function playFailBeep(){
-  try{
-    const AC=window.AudioContext||window.webkitAudioContext;
-    if(!AC) return;
-    const ctx=new AC();
-    const o=ctx.createOscillator();
-    const g=ctx.createGain();
-    o.type="sine";
-    o.frequency.value=220;
-    g.gain.value=0.0001;
-    o.connect(g); g.connect(ctx.destination);
-    o.start();
-    const t=ctx.currentTime;
-    g.gain.exponentialRampToValueAtTime(0.18, t+0.02);
-    g.gain.exponentialRampToValueAtTime(0.0001, t+0.22);
-    o.stop(t+0.24);
-    o.onended=()=>{ try{ctx.close();}catch(_){} };
-  }catch(_){/* ignore */}
-}
-
-/** ====== ENDPOINT (Google Apps Script) ====== **/
-function loadEndpoint(){ return localStorage.getItem(K_ENDPOINT)||""; }
-function saveEndpoint(v){ localStorage.setItem(K_ENDPOINT,(v||"").trim()); }
-async function postResult(payload){
-  const endpoint=loadEndpoint();
-  if(!endpoint) return {ok:false,skipped:true};
-  try{
-    const res=await fetch(endpoint,{
-      method:"POST",
-      headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify(payload),
-    });
-    return {ok:res.ok,status:res.status};
-  }catch(e){ return {ok:false,error:String(e)} }
-}
-
-/** ====== STATE ====== **/
-let settings=loadJSON(K_SETTINGS, DEFAULT_SETTINGS);
-settings.requiredQuestions=clamp(+settings.requiredQuestions||10,1,100);
-settings.requiredAccuracy=clamp(+settings.requiredAccuracy||80,1,100);
-settings.enabledSymbols=(Array.isArray(settings.enabledSymbols)&&settings.enabledSymbols.length)?settings.enabledSymbols.filter(x=>BOPOMOFO.includes(x)):BOPOMOFO.slice();
-settings.autoSpeakOnQuestion=!!settings.autoSpeakOnQuestion;
-settings.lockAfterPick=!!settings.lockAfterPick;
-settings.tracePassScore=clamp(+settings.tracePassScore||52,40,90);
-settings.traceToleranceStroke=clamp(+settings.traceToleranceStroke||38,24,80);
-settings.traceLineWidth=clamp(+settings.traceLineWidth||22,14,34);
-
-let student=loadJSON(K_STUDENT,{classNo:"", seatNo:"", name:""});
-let stats=loadJSON(K_STATS,{correct:0,total:0});
-stats.correct=+stats.correct||0; stats.total=+stats.total||0;
-
-let currentSymbol="ㄅ";
-
-/** ====== ELEMENTS ====== **/
-const themeBtn=document.getElementById("themeBtn");
-const tabLearn=document.getElementById("tabLearn");
-const tabQuiz=document.getElementById("tabQuiz");
-const tabTeacher=document.getElementById("tabTeacher");
-const pageLearn=document.getElementById("pageLearn");
-const pageQuiz=document.getElementById("pageQuiz");
-const pageTeacher=document.getElementById("pageTeacher");
-
-// student
-const studentClass=document.getElementById("studentClass");
-const studentSeat=document.getElementById("studentSeat");
-const studentName=document.getElementById("studentName");
-const btnClearStudent=document.getElementById("btnClearStudent");
-const studentHint=document.getElementById("studentHint");
-
-// learn
-const symList=document.getElementById("symList");
-const btnSpeakLearn=document.getElementById("btnSpeakLearn");
-const learnCanvas=document.getElementById("learnCanvas");
-const btnClearLearn=document.getElementById("btnClearLearn");
-const btnGradeLearn=document.getElementById("btnGradeLearn");
-const learnResult=document.getElementById("learnResult");
-
-// quiz
-const btnStartQuiz=document.getElementById("btnStartQuiz");
-const btnReplayQuiz=document.getElementById("btnReplayQuiz");
-const btnResetQuiz=document.getElementById("btnResetQuiz");
-const quizMain=document.getElementById("quizMain");
-const quizOpts=document.getElementById("quizOpts");
-const quizMsg=document.getElementById("quizMsg");
-const quizLights=document.getElementById("quizLights");
-const quizTraceCard=document.getElementById("quizTraceCard");
-const quizCanvas=document.getElementById("quizCanvas");
-const btnClearQuizTrace=document.getElementById("btnClearQuizTrace");
-const btnGradeQuizTrace=document.getElementById("btnGradeQuizTrace");
-const quizTraceResult=document.getElementById("quizTraceResult");
-const quizResultCard=document.getElementById("quizResultCard");
-const quizResultIcon=document.getElementById("quizResultIcon");
-const quizResultText=document.getElementById("quizResultText");
-const quizResultSub=document.getElementById("quizResultSub");
-const btnRestartAfterResult=document.getElementById("btnRestartAfterResult");
-
-// teacher
-const setRQ=document.getElementById("setRQ");
-const setRA=document.getElementById("setRA");
-const setAutoSpeak=document.getElementById("setAutoSpeak");
-const setLock=document.getElementById("setLock");
-const btnAll=document.getElementById("btnAll");
-const btnNone=document.getElementById("btnNone");
-const enabledCount=document.getElementById("enabledCount");
-const teacherSym=document.getElementById("teacherSym");
-const endpointInput=document.getElementById("endpointInput");
-const epState=document.getElementById("epState");
-const setTracePass=document.getElementById("setTracePass");
-const setTraceTol=document.getElementById("setTraceTol");
-const setTraceW=document.getElementById("setTraceW");
-
-/** ====== TABS ====== **/
-function setTab(t){
-  pageLearn.style.display = (t==="learn")?"block":"none";
-  pageQuiz.style.display = (t==="quiz")?"block":"none";
-  pageTeacher.style.display = (t==="teacher")?"block":"none";
-
-  tabLearn.className = "btn "+(t==="learn"?"btnPrimary":"btnGhost");
-  tabQuiz.className = "btn "+(t==="quiz"?"btnPrimary":"btnGhost");
-  tabTeacher.className = "btn "+(t==="teacher"?"btnPrimary":"btnGhost");
-}
-tabLearn.onclick=()=>setTab("learn");
-tabQuiz.onclick=()=>setTab("quiz");
-tabTeacher.onclick=()=>setTab("teacher");
-
-/** ====== STUDENT ====== **/
-function fillSelect(select, from, to){
-  if(!select) return;
-  for(let i=from;i<=to;i++){
-    const opt=document.createElement("option");
-    opt.value=String(i);
-    opt.textContent=String(i);
-    select.appendChild(opt);
-  }
-}
-fillSelect(studentClass,1,6);
-fillSelect(studentSeat,1,25);
-
-studentClass.value=student.classNo||"";
-studentSeat.value=student.seatNo||"";
-studentName.value=student.name||"";
-
-function computedStudentId(){
-  if(student.classNo && student.seatNo) return String(student.classNo)+"-"+String(student.seatNo).padStart(2,"0");
-  return "";
-}
-function updateStudentHint(){
-  const sid=computedStudentId();
-  studentHint.textContent = sid ? ("已選："+sid+"（可回傳結果）") : "未選班級/座號：仍可測驗，但不會回傳";
-}
-function saveStudent(){
-  student.classNo=(studentClass.value||"").trim();
-  student.seatNo=(studentSeat.value||"").trim();
-  student.name=(studentName.value||"").slice(0,20);
-  saveJSON(K_STUDENT, student);
-  updateStudentHint();
-}
-studentClass.addEventListener("change", saveStudent);
-studentSeat.addEventListener("change", saveStudent);
-studentName.addEventListener("input", saveStudent);
-btnClearStudent.onclick=()=>{
-  student={classNo:"", seatNo:"", name:""};
-  saveJSON(K_STUDENT, student);
-  studentClass.value="";
-  studentSeat.value="";
-  studentName.value="";
-  updateStudentHint();
-};
-
-/** ====== UI TOOL: gentle scroll ====== **/
-function gentleScrollTo(el, block){
-  if(!el || !el.scrollIntoView) return;
-  setTimeout(()=>{
-    try{ el.scrollIntoView({behavior:"smooth", block:block||"center"}); }
-    catch(_){ el.scrollIntoView(true); }
-  }, 60);
-}
-
-/** ====== TRACE PAD (reusable) ====== **/
-function createTracePad(canvas, getSymbol, resultEl){
-  const SIZE=320;
-  const ctx=canvas.getContext("2d");
-  let drawing=false;
-  let last=null;
-
-  function reset(){
-    resultEl.className="hint";
-    resultEl.textContent="";
-
-    ctx.clearRect(0,0,SIZE,SIZE);
-    ctx.fillStyle="#fff";
-    ctx.fillRect(0,0,SIZE,SIZE);
-
-    // grid
-    ctx.strokeStyle="rgba(15,23,42,0.08)";
-    ctx.lineWidth=1;
-    for(let i=1;i<4;i++){
-      const p=SIZE*i/4;
-      ctx.beginPath(); ctx.moveTo(p,0); ctx.lineTo(p,SIZE); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0,p); ctx.lineTo(SIZE,p); ctx.stroke();
-    }
-
-    // guide
-    const sym=getSymbol();
-    ctx.fillStyle="rgba(15,23,42,0.18)";
-    ctx.textAlign="center";
-    ctx.textBaseline="middle";
-    ctx.font="260px system-ui,-apple-system,'Noto Sans TC','Segoe UI',Roboto,Arial";
-    ctx.fillText(sym, SIZE/2, SIZE/2+10);
-
-    ctx.strokeStyle="rgba(15,23,42,0.12)";
-    ctx.lineWidth=2;
-    ctx.strokeRect(8,8,SIZE-16,SIZE-16);
-  }
-
-  function posFromEvent(e){
-    const r=canvas.getBoundingClientRect();
-    const x=clamp(e.clientX-r.left,0,r.width);
-    const y=clamp(e.clientY-r.top,0,r.height);
-    return {x,y};
-  }
-
-  canvas.addEventListener("pointerdown",(e)=>{
-    drawing=true;
-    last=posFromEvent(e);
-    canvas.setPointerCapture(e.pointerId);
-  });
-  canvas.addEventListener("pointermove",(e)=>{
-    if(!drawing) return;
-    const p=posFromEvent(e);
-    if(!last){ last=p; return; }
-    ctx.strokeStyle="#ef4444";
-    ctx.lineWidth=settings.traceLineWidth;
-    ctx.lineCap="round";
-    ctx.lineJoin="round";
-    ctx.beginPath();
-    ctx.moveTo(last.x,last.y);
-    ctx.lineTo(p.x,p.y);
-    ctx.stroke();
-    last=p;
-  });
-  function endDraw(){ drawing=false; last=null; }
-  canvas.addEventListener("pointerup", endDraw);
-  canvas.addEventListener("pointercancel", endDraw);
-
-  function computePass(){
-    const sym=getSymbol();
-
-    const mask=document.createElement("canvas");
-    mask.width=SIZE; mask.height=SIZE;
-    const m=mask.getContext("2d");
-
-    m.fillStyle="#fff"; m.fillRect(0,0,SIZE,SIZE);
-    m.fillStyle="#000";
-    m.textAlign="center"; m.textBaseline="middle";
-    m.font="260px system-ui,-apple-system,'Noto Sans TC','Segoe UI',Roboto,Arial";
-    m.fillText(sym, SIZE/2, SIZE/2+10);
-    m.strokeStyle="#000";
-    m.lineWidth=settings.traceToleranceStroke;
-    m.strokeText(sym, SIZE/2, SIZE/2+10);
-
-    const md=m.getImageData(0,0,SIZE,SIZE).data;
-    const dd=ctx.getImageData(0,0,SIZE,SIZE).data;
-
-    let targetArea=0, drawnTotal=0, hit=0, out=0;
-    for(let i=0;i<md.length;i+=4){
-      const isTarget = md[i+3]>10 && (md[i]<220 || md[i+1]<220 || md[i+2]<220);
-      if(isTarget) targetArea++;
-
-      const r=dd[i], g=dd[i+1], b=dd[i+2], a=dd[i+3];
-      const isRed = a>0 && r>150 && g<180 && b<180;
-      if(!isRed) continue;
-      drawnTotal++;
-      if(isTarget) hit++; else out++;
-    }
-
-    const coverage = targetArea? hit/targetArea : 0;
-    const outside = drawnTotal? out/drawnTotal : 0;
-    const raw = coverage*130 + 12 - outside*18;
-    const score = clamp(Math.round(raw),0,100);
-    const pass = score>=settings.tracePassScore;
-    return {pass, score};
-  }
-
-  return { reset, computePass };
-}
-
-/** ====== LEARN ====== **/
-function renderSymbolButtons(){
-  symList.innerHTML="";
-  BOPOMOFO.forEach(s=>{
-    const b=document.createElement("button");
-    b.className="symBtn"+(s===currentSymbol?" on":"");
-    b.textContent=s;
-    b.onclick=()=>{
-      currentSymbol=s;
-      speakBopomofo(s); // 學習：點就發音
-      renderSymbolButtons();
-      learnPad.reset();
-      gentleScrollTo(learnCanvas, "center");
-    };
-    symList.appendChild(b);
-  });
-}
-btnSpeakLearn.onclick=()=>speakBopomofo(currentSymbol);
-const learnPad=createTracePad(learnCanvas, ()=>currentSymbol, learnResult);
-btnClearLearn.onclick=()=>learnPad.reset();
-btnGradeLearn.onclick=async ()=>{
-  const r=learnPad.computePass();
-  if(r.pass){
-    learnResult.className="resultText ok";
-    learnResult.textContent="✅ 通過";
-    await speakCoachAsync("你通過了!");
-  }else{
-    learnResult.className="resultText bad";
-    learnResult.textContent="❌ 未通過";
-    await speakCoachAsync("未通過，再試試看。");
-  }
-};
-
-/** ====== TEACHER ====== **/
-function enabledPool(){
-  return (settings.enabledSymbols && settings.enabledSymbols.length)?settings.enabledSymbols:BOPOMOFO.slice();
-}
-function updateTeacherMeta(){
-  enabledCount.textContent = "已選符號："+settings.enabledSymbols.length+" / "+BOPOMOFO.length;
-  const ep=loadEndpoint();
-  epState.textContent = ep ? ("已設定："+ep) : "未設定（空白 = 不回傳）";
-}
-function renderTeacherSymbols(){
-  teacherSym.innerHTML="";
-  BOPOMOFO.forEach(s=>{
-    const on=settings.enabledSymbols.includes(s);
-    const b=document.createElement("button");
-    b.className="symBtn"+(on?" on":"");
-    b.textContent=s;
-    b.onclick=()=>{
-      const set=new Set(settings.enabledSymbols);
-      if(set.has(s)) set.delete(s); else set.add(s);
-      settings.enabledSymbols=Array.from(set);
-      saveJSON(K_SETTINGS, settings);
-      renderTeacherSymbols();
-      updateTeacherMeta();
-    };
-    teacherSym.appendChild(b);
-  });
-}
-btnAll.onclick=()=>{ settings.enabledSymbols=BOPOMOFO.slice(); saveJSON(K_SETTINGS, settings); renderTeacherSymbols(); updateTeacherMeta(); };
-btnNone.onclick=()=>{ settings.enabledSymbols=[]; saveJSON(K_SETTINGS, settings); renderTeacherSymbols(); updateTeacherMeta(); };
-
-function saveSettings(){
-  settings.requiredQuestions=clamp(+setRQ.value||10,1,100);
-  settings.requiredAccuracy=clamp(+setRA.value||80,1,100);
-  settings.autoSpeakOnQuestion=!!setAutoSpeak.checked;
-  settings.lockAfterPick=!!setLock.checked;
-  settings.tracePassScore=clamp(+setTracePass.value||52,40,90);
-  settings.traceToleranceStroke=clamp(+setTraceTol.value||38,24,80);
-  settings.traceLineWidth=clamp(+setTraceW.value||22,14,34);
-  saveJSON(K_SETTINGS, settings);
-  updateTeacherMeta();
-  renderQuizLights();
-}
-setRQ.value=settings.requiredQuestions;
-setRA.value=settings.requiredAccuracy;
-setAutoSpeak.checked=settings.autoSpeakOnQuestion;
-setLock.checked=settings.lockAfterPick;
-setTracePass.value=settings.tracePassScore;
-setTraceTol.value=settings.traceToleranceStroke;
-setTraceW.value=settings.traceLineWidth;
-setRQ.oninput=saveSettings;
-setRA.oninput=saveSettings;
-setAutoSpeak.onchange=saveSettings;
-setLock.onchange=saveSettings;
-setTracePass.oninput=saveSettings;
-setTraceTol.oninput=saveSettings;
-setTraceW.oninput=saveSettings;
-
-endpointInput.value=loadEndpoint();
-endpointInput.addEventListener("input", ()=>{ saveEndpoint(endpointInput.value); updateTeacherMeta(); });
-
-/** ====== QUIZ (修正後穩定版) ====== **/
-let quizRunning=false;
-let quizGoal="ㄅ";
-let quizLocked=false;
-let quizNeedTrace=false;
-let quizChosenOk=false;
-let quizHadWrong=false;   // 本題是否曾答錯（決定紅/綠燈）
-
-let levelTotal=0;         // 已完成題數（描寫通過才算完成）
-let levelCorrect=0;       // 綠燈數（一次就點對 + 描寫通過）
-let quizResults=[];       // true=綠、false=紅、undefined=灰
-
-function renderQuizLights(){
-  if(!quizLights) return;
-  quizLights.innerHTML="";
-  const total=settings.requiredQuestions;
-  for(let i=0;i<total;i++){
-    const d=document.createElement("div");
-    d.style.width="18px";
-    d.style.height="18px";
-    d.style.borderRadius="50%";
-    d.style.background = (quizResults[i]===true) ? "#22c55e" : (quizResults[i]===false) ? "#ef4444" : "#94a3b8";
-    quizLights.appendChild(d);
-  }
-}
-
-function resetQuizUI(){
-  quizRunning=false;
-  levelTotal=0;
-  levelCorrect=0;
-  quizResults=[];
-  renderQuizLights();
-
-  quizMain.style.display="none";
-  quizTraceCard.style.display="none";
-  quizResultCard.style.display="none";
-  btnReplayQuiz.disabled=true;
-  btnResetQuiz.style.display="none";
-  quizMsg.textContent="";
-  quizTraceResult.textContent="";
-  quizTraceResult.className="hint";
-}
-
-function showQuizResult(){
-  quizTraceCard.style.display="none";
-  quizResultCard.style.display="block";
-  gentleScrollTo(quizResultCard, "center");
-
-  const acc=percent(levelCorrect, levelTotal);
-  const pass=(levelTotal>=settings.requiredQuestions) && (acc>=settings.requiredAccuracy);
-
-  quizResultIcon.textContent = pass ? "✅" : "❌";
-  quizResultText.textContent = pass ? "你通過了!" : "未通過";
-  quizResultText.style.color = pass ? "var(--ok)" : "var(--bad)";
-  quizResultSub.textContent = levelCorrect+" / "+levelTotal+"（"+acc+"%）";
-
-  if(pass){
-    speakCoachAsync("你通過了!");
-  }else{
-    playFailBeep();
-  }
-
-  try{ tryPostFinal(pass, acc); }catch(_){/* ignore */}
-}
-
-function pickNextGoal(){
-  const pool=enabledPool();
-  return randOne((pool && pool.length)?pool:BOPOMOFO);
-}
-
-function renderQuizOptions(){
-  const pool=enabledPool();
-  const base=(pool && pool.length)?pool:BOPOMOFO;
-  const ops=pick4(base, quizGoal);
-  quizOpts.innerHTML="";
-  ops.forEach(s=>{
-    const b=document.createElement("button");
-    b.className="opt";
-    b.textContent=s;
-    b.onclick=()=>pickAnswer(s);
-    quizOpts.appendChild(b);
-  });
-}
-
-function applyFeedbackUI(chosen){
-  const children=Array.from(quizOpts.children);
-  children.forEach(btn=>{
-    const s=btn.textContent;
-    btn.classList.remove("ok","bad","dim");
-    if(s===quizGoal) btn.classList.add("ok");
-    else if(s===chosen) btn.classList.add("bad");
-    else btn.classList.add("dim");
-  });
-}
-
-const quizPad=createTracePad(quizCanvas, ()=>quizGoal, quizTraceResult);
-
-function nextQuestion(){
-  if(levelTotal>=settings.requiredQuestions){
-    showQuizResult();
-    return;
-  }
-
-  quizLocked=false;
-  quizNeedTrace=false;
-  quizChosenOk=false;
-  quizHadWrong=false;
-
-  quizTraceCard.style.display="none";
-  quizTraceResult.textContent="";
-  quizTraceResult.className="hint";
-  quizMsg.textContent="";
-
-  quizGoal=pickNextGoal();
-  renderQuizOptions();
-  if(quizOpts.children.length===0) renderQuizOptions();
-
-  gentleScrollTo(quizOpts, "center");
-
-  if(settings.autoSpeakOnQuestion){
-    setTimeout(()=>speakBopomofo(quizGoal), 120);
-  }
-}
-
-function pickAnswer(chosen){
-  if(quizLocked) return;
-
-  const ok=(chosen===quizGoal);
-  applyFeedbackUI(chosen);
-
-  if(settings.lockAfterPick) quizLocked=true;
-
-  if(!ok){
-    quizHadWrong=true;
-    quizLocked=false; // 讓學生繼續點到正確
-    return;
-  }
-
-  quizChosenOk=true;
-  quizNeedTrace=true;
-  quizTraceCard.style.display="block";
-  quizPad.reset();
-  gentleScrollTo(quizCanvas, "center");
-}
-
-btnClearQuizTrace.onclick=()=>quizPad.reset();
-
-async function commitAndAdvance(){
-  levelTotal++;
-
-  const green = !quizHadWrong;
-  if(green) levelCorrect++;
-
-  quizResults[levelTotal-1] = green;
-  renderQuizLights();
-
-  await new Promise(r=>setTimeout(r, 120));
-  nextQuestion();
-}
-
-btnGradeQuizTrace.onclick=async ()=>{
-  if(!quizNeedTrace || !quizChosenOk) return;
-
-  const r=quizPad.computePass();
-  if(r.pass){
-    quizTraceResult.className="resultText ok";
-    quizTraceResult.textContent="✅ 通過";
-    await speakCoachAsync("你通過了!");
-    await commitAndAdvance();
-  }else{
-    quizTraceResult.className="resultText bad";
-    quizTraceResult.textContent="❌ 未通過";
-    playFailBeep();
-  }
-};
-
-function startQuiz(){
-  const pool=enabledPool();
-  if(!pool || pool.length===0){
-    speakCoachAsync("老師還沒有選題庫喔。");
-    setTab("teacher");
-    return;
-  }
-
-  quizRunning=true;
-  levelTotal=0;
-  levelCorrect=0;
-  quizResults=[];
-  renderQuizLights();
-
-  quizMain.style.display="block";
-  quizResultCard.style.display="none";
-  quizTraceCard.style.display="none";
-
-  btnReplayQuiz.disabled=false;
-  btnResetQuiz.style.display="inline-flex";
-
-  nextQuestion();
-}
-
-btnStartQuiz.onclick=startQuiz;
-btnResetQuiz.onclick=startQuiz;
-btnReplayQuiz.onclick=()=>{ if(quizRunning) speakBopomofo(quizGoal); };
-btnRestartAfterResult.onclick=startQuiz;
-
-async function tryPostFinal(pass, acc){
-  const sid=computedStudentId();
-  if(!sid) return;
-
-  const payload={
-    type:"bopomofo_quiz_result",
-    timestamp: nowIso(),
-    deviceId: getDeviceId(),
-    student:{ id:sid, classNo: student.classNo||"", seatNo: student.seatNo||"", name: student.name||"" },
-    settings:{
-      requiredQuestions: settings.requiredQuestions,
-      requiredAccuracy: settings.requiredAccuracy,
-      enabledSymbols: enabledPool(),
-      mode:"quiz_trace_gate"
-    },
-    summary:{
-      total: levelTotal,
-      correct: levelCorrect,
-      accuracy: acc,
-      pass: !!pass
-    }
-  };
-  await postResult(payload);
-}
-
-/** ====== INIT ====== **/
-(function init(){
-  setTheme(loadTheme());
-  themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
-
-  if(window.speechSynthesis){
-    pickVoice();
-    window.speechSynthesis.onvoiceschanged=()=>pickVoice();
-  }
-
-  updateStudentHint();
-
-  renderSymbolButtons();
-  learnPad.reset();
-  gentleScrollTo(learnCanvas, "center");
-
-  renderTeacherSymbols();
-  updateTeacherMeta();
-
-  resetQuizUI();
-
-  setTab("learn");
-})();
-</script>
+  </script>
 </body>
 </html>
