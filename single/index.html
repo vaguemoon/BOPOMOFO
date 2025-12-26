@@ -371,7 +371,42 @@ function speakAsync(text, kind, opts){
     u.onerror=()=>resolve();
   });
 }
-function speakBopomofo(sym){ speak(sym,"bopomofo",{interrupt:true}); }
+// ====== 注音：改成播放本地音檔（相對於 single/index.html → ./audio/F1.WAV ~ F37.WAV） ======
+let bopomofoAudioCache = Object.create(null);
+let currentBopomofoAudio = null;
+
+function playBopomofoAudioByIndex(idx){
+  if(idx<0 || idx>=BOPOMOFO.length) return;
+
+  // 依照你 repo 結構：single/index.html + audio/ → 用相對路徑
+  const src="./audio/F"+(idx+1)+".WAV";
+
+  let audio=bopomofoAudioCache[src];
+  if(!audio){
+    audio=new Audio(src);
+    audio.preload="auto";
+    bopomofoAudioCache[src]=audio;
+  }
+
+  // 允許即時重播：先停止上一個
+  try{
+    if(currentBopomofoAudio){
+      currentBopomofoAudio.pause();
+      currentBopomofoAudio.currentTime=0;
+    }
+  }catch(_){/* ignore */}
+
+  currentBopomofoAudio=audio;
+  try{ audio.currentTime=0; }catch(_){/* ignore */}
+  audio.play().catch(()=>{/* ignore autoplay block */});
+}
+
+function speakBopomofo(sym){
+  const idx=BOPOMOFO.indexOf(sym);
+  if(idx===-1) return;
+  playBopomofoAudioByIndex(idx);
+}
+
 function speakCoachAsync(msg){ return speakAsync(msg,"coach",{interrupt:false}); }
 
 /** ====== FAIL BEEP ====== **/
