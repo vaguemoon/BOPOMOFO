@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>注音拆音訓練</title>
+  <style>
+    :root{
+      --bg:#f8fafc; --card:#ffffff; --text:#0f172a; --sub:#475569; --border:#e2e8f0;
+      --soft:#f1f5f9; --btn:#0f172a; --btnText:#fff; --ghostBg:#fff; --ghostText:#0f172a; --ghostBorder:#e2e8f0;
+      --ok:#10b981; --bad:#ef4444;
+    }
+    [data-theme="dark"]{
+      --bg:#020617; --card:#0f172a; --text:#f8fafc; --sub:#cbd5e1; --border:#334155;
+      --soft:#1e293b; --btn:#34d399; --btnText:#020617; --ghostBg:#0f172a; --ghostText:#f8fafc; --ghostBorder:#334155;
+      --ok:#34d399; --bad:#fb7185;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Noto Sans TC","Segoe UI",Roboto,Arial; background:var(--bg); color:var(--text)}
+    .wrap{max-width:1100px;margin:0 auto;padding:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .space{height:10px}
+    .title{font-size:18px;font-weight:900;letter-spacing:-0.02em}
+    .subtitle{color:var(--sub);font-weight:700;font-size:12px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:12px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+
+    .btn{border:0;border-radius:18px;padding:12px 16px;font-weight:900;font-size:16px;cursor:pointer}
+    .btnPrimary{background:var(--btn);color:var(--btnText)}
+    .btnGhost{background:var(--ghostBg);color:var(--ghostText);border:1px solid var(--ghostBorder)}
+    .btnIcon{padding:12px 14px;min-width:56px;font-size:22px;display:inline-flex;align-items:center;justify-content:center}
+    .btn:active{transform:scale(.99)}
+
+    .hint{color:var(--sub);font-weight:800;font-size:12px}
+
+    /* 測驗：四選一一列（沿用同款） */
+    .quizOnly{max-width:460px;margin:0 auto}
+    .quizTop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .qOpts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .opt{border-radius:18px;border:1px solid var(--border);background:var(--card);padding:14px 6px;font-size:34px;font-weight:1000;cursor:pointer}
+    .opt.dim{opacity:.55}
+    .opt.ok{border-color:var(--ok);background:color-mix(in srgb, var(--ok) 12%, var(--card))}
+    .opt.bad{border-color:var(--bad);background:color-mix(in srgb, var(--bad) 10%, var(--card))}
+
+    /* 開始遊戲按鈕（同款） */
+    .startBtn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 16px; border-radius:22px;
+      font-size:18px; font-weight:1000;
+      box-shadow:0 10px 30px rgba(0,0,0,.12);
+    }
+    .startIcon{font-size:26px;line-height:1}
+
+    /* 小小的「ㄇ + ㄠ」排版：不改整體風格，只讓加號不擠 */
+    .pair{display:flex;align-items:center;justify-content:center;gap:6px}
+    .plus{font-size:18px;font-weight:1000;opacity:.75;line-height:1}
+    .sym{line-height:1}
+
+    /* 進度燈（沿用原本的圓點視覺語彙） */
+    .lights{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
+    .light{width:18px;height:18px;border-radius:50%}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="row" style="justify-content:space-between;align-items:flex-end">
+    <div>
+      <div class="title">注音拆音訓練</div>
+      <div class="subtitle">聽音節 → 拆成「聲母 + 韻母」</div>
+    </div>
+    <div class="row" style="align-items:center">
+      <button id="themeBtn" class="btn btnGhost">🌙</button>
+    </div>
+  </div>
+
+  <div class="space"></div>
+
+  <section id="pageTrain">
+    <div class="quizOnly">
+      <div class="card">
+        <div class="quizTop">
+          <button id="btnStart" class="btn btnPrimary startBtn" title="開始">
+            <span class="startIcon">🎧</span><span>開始</span>
+          </button>
+          <div class="row">
+            <button id="btnReplay" class="btn btnGhost btnIcon" title="再聽一次" disabled>🔊</button>
+            <button id="btnReset" class="btn btnGhost btnIcon" title="重來" style="display:none">🔄</button>
+          </div>
+        </div>
+
+        <div class="space"></div>
+
+        <div id="main" style="display:none">
+          <div class="card" style="text-align:center">
+            <div id="lights" class="lights"></div>
+          </div>
+
+          <div class="space"></div>
+
+          <div class="qOpts" id="opts"></div>
+          <div id="msg" class="hint" style="text-align:center;min-height:16px"></div>
+
+          <div class="space"></div>
+
+          <div class="card" id="resultCard" style="display:none;text-align:center">
+            <div id="resultIcon" style="font-size:56px;line-height:1">✅</div>
+            <div id="resultText" style="font-weight:1000;font-size:22px;margin-top:8px"></div>
+            <div id="resultSub" class="hint" style="margin-top:6px"></div>
+            <div class="space"></div>
+            <button id="btnRestart" class="btn btnPrimary btnIcon" title="再玩一次">🔄</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  window.AUDIO_BASE = "https://vaguemoon.github.io/bopomofo-audio/audio/";
+</script>
+
+<script>
+/** ====== DATA（順序必須對應 F1~F37） ====== **/
+const BOPOMOFO = [
+ "ㄅ","ㄆ","ㄇ","ㄈ","ㄉ","ㄊ","ㄋ","ㄌ","ㄍ","ㄎ","ㄏ","ㄐ","ㄑ","ㄒ","ㄓ","ㄔ","ㄕ","ㄖ","ㄗ","ㄘ","ㄙ",
+ "ㄧ","ㄨ","ㄩ","ㄚ","ㄛ","ㄜ","ㄝ","ㄞ","ㄟ","ㄠ","ㄡ","ㄢ","ㄣ","ㄤ","ㄥ","ㄦ",
+];
+
+// 拆音訓練：固定「聲母」與「韻母」兩大池（不含聲調）
+const ONSETS = BOPOMOFO.slice(0, 21);   // ㄅ..ㄙ
+const RIMES  = BOPOMOFO.slice(21);      // ㄧ..ㄦ
+
+/** ====== UTIL ====== **/
+function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function randOne(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)) }
+function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a }
+
+/** ====== THEME ====== **/
+const K_THEME="bopomofo_split_theme_v1";
+function loadTheme(){
+  const t=localStorage.getItem(K_THEME);
+  if(t==="dark"||t==="light") return t;
+  return (window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";
+}
+function setTheme(t){
+  document.documentElement.dataset.theme=t;
+  localStorage.setItem(K_THEME,t);
+  themeBtn.textContent=(t==="dark")?"☀️":"🌙";
+}
+
+/** ====== AUDIO（只用檔案，不用 TTS） ====== **/
+let bopomofoAudioCache = Object.create(null);
+let currentBopomofoAudio = null;
+
+const AUDIO_BASE = (()=>{
+  let b = (typeof window!=="undefined" && window.AUDIO_BASE) ? window.AUDIO_BASE : "./audio/";
+  b = String(b||"").trim();
+  if(!b) b = "./audio/";
+  if(!b.endsWith("/")) b += "/";
+  return b;
+})();
+
+function srcByIndex(idx){
+  return AUDIO_BASE + "F" + (idx+1) + ".WAV";
+}
+
+function playBopomofoBySymbol(sym){
+  const idx = BOPOMOFO.indexOf(sym);
+  if(idx<0) return Promise.resolve(false);
+
+  const src = srcByIndex(idx);
+  let audio = bopomofoAudioCache[src];
+  if(!audio){
+    audio = new Audio(src);
+    audio.preload = "auto";
+    bopomofoAudioCache[src] = audio;
+  }
+
+  try{
+    if(currentBopomofoAudio){
+      currentBopomofoAudio.pause();
+      currentBopomofoAudio.currentTime = 0;
+    }
+  }catch(_){}
+
+  currentBopomofoAudio = audio;
+
+  return new Promise((resolve)=>{
+    try{ audio.currentTime = 0; }catch(_){}
+    const done = ()=>{ cleanup(); resolve(true); };
+    const cleanup = ()=>{
+      audio.removeEventListener("ended", done);
+      audio.removeEventListener("error", done);
+    };
+    audio.addEventListener("ended", done, {once:true});
+    audio.addEventListener("error", done, {once:true});
+    audio.play().catch(()=>{ cleanup(); resolve(false); });
+  });
+}
+
+// 音節合成：聲母 → (90~120ms) → 韻母
+async function playSyllable(onset, rime){
+  await playBopomofoBySymbol(onset);
+  await sleep(randInt(90,120));
+  await playBopomofoBySymbol(rime);
+}
+
+/** ====== UI ====== **/
+const themeBtn=document.getElementById("themeBtn");
+const btnStart=document.getElementById("btnStart");
+const btnReplay=document.getElementById("btnReplay");
+const btnReset=document.getElementById("btnReset");
+const btnRestart=document.getElementById("btnRestart");
+
+const main=document.getElementById("main");
+const opts=document.getElementById("opts");
+const msg=document.getElementById("msg");
+const lights=document.getElementById("lights");
+
+const resultCard=document.getElementById("resultCard");
+const resultIcon=document.getElementById("resultIcon");
+const resultText=document.getElementById("resultText");
+const resultSub=document.getElementById("resultSub");
+
+/** ====== TRAIN STATE ====== **/
+const TOTAL_Q = 10; // 固定 10 題：簡單穩定（需要調整再說）
+let running=false;
+
+let qIndex=0;
+let correct=0;
+
+let goal=null; // {onset:"ㄇ", rime:"ㄠ"}
+let locked=false;
+
+function renderLights(){
+  lights.innerHTML="";
+  for(let i=0;i<TOTAL_Q;i++){
+    const d=document.createElement("div");
+    d.className="light";
+    // 灰：未作答；綠：答對；紅：答錯
+    // 這裡用「每題一次判定」：答完就定色（穩定、可預期）
+    const v = (i<qIndex) ? true : null;
+    // 先畫灰，等提交題目時再回填顏色（見 commitAnswer）
+    d.style.background = "#94a3b8";
+    lights.appendChild(d);
+  }
+}
+
+function setLight(i, ok){
+  const el = lights.children[i];
+  if(!el) return;
+  el.style.background = ok ? "#22c55e" : "#ef4444";
+}
+
+function resetUI(){
+  running=false;
+  qIndex=0;
+  correct=0;
+  goal=null;
+  locked=false;
+
+  main.style.display="none";
+  btnReplay.disabled=true;
+  btnReset.style.display="none";
+  msg.textContent="";
+  opts.innerHTML="";
+
+  resultCard.style.display="none";
+}
+
+function showResult(){
+  resultCard.style.display="block";
+  const acc = Math.round((correct/TOTAL_Q)*100);
+
+  resultIcon.textContent = "✅";
+  resultText.textContent = "完成！";
+  resultText.style.color = "var(--ok)";
+  resultSub.textContent = correct+" / "+TOTAL_Q+"（"+acc+"%）";
+}
+
+function buildOptionEl(pair){
+  const b=document.createElement("button");
+  b.className="opt";
+  b.type="button";
+
+  const box=document.createElement("div");
+  box.className="pair";
+
+  const s1=document.createElement("span");
+  s1.className="sym";
+  s1.textContent=pair.onset;
+
+  const plus=document.createElement("span");
+  plus.className="plus";
+  plus.textContent="+";
+
+  const s2=document.createElement("span");
+  s2.className="sym";
+  s2.textContent=pair.rime;
+
+  box.appendChild(s1);
+  box.appendChild(plus);
+  box.appendChild(s2);
+  b.appendChild(box);
+
+  return b;
+}
+
+// 錯誤選項：只錯一個維度，且可預期
+function genOptions(ans){
+  const onset = ans.onset;
+  const rime = ans.rime;
+
+  const otherOnsets = shuffle(ONSETS.filter(x=>x!==onset));
+  const otherRimes  = shuffle(RIMES.filter(x=>x!==rime));
+
+  // 3 個錯誤：兩個「聲母錯」+ 一個「韻母錯」（或反過來）
+// 這樣整體更有可比較性：孩子真的在拆哪一段，而不是亂猜。
+  const d1 = { onset: otherOnsets[0], rime: rime };       // 只錯聲母
+  const d2 = { onset: onset, rime: otherRimes[0] };       // 只錯韻母
+  const d3 = { onset: otherOnsets[1], rime: rime };       // 只錯聲母（不同於 d1）
+
+  const all = [
+    { onset, rime, _ok:true },
+    { ...d1, _ok:false },
+    { ...d2, _ok:false },
+    { ...d3, _ok:false },
+  ];
+
+  // 保證唯一（極端情況下補洞，但正常不會發生）
+  const key = (p)=>p.onset+"|"+p.rime;
+  const seen = new Set();
+  const unique=[];
+  for(const p of all){
+    const k=key(p);
+    if(seen.has(k)) continue;
+    seen.add(k);
+    unique.push(p);
+  }
+  while(unique.length<4){
+    // 補一個只錯韻母（避免重複）
+    const rr = otherRimes[unique.length] || randOne(otherRimes);
+    const cand = { onset: onset, rime: rr, _ok:false };
+    const k=key(cand);
+    if(!seen.has(k)){ seen.add(k); unique.push(cand); }
+  }
+  return shuffle(unique);
+}
+
+function applyFeedback(chosenBtn, isOk){
+  Array.from(opts.children).forEach(btn=>{
+    btn.classList.remove("ok","bad","dim");
+  });
+
+  if(isOk){
+    chosenBtn.classList.add("ok");
+    Array.from(opts.children).forEach(btn=>{
+      if(btn!==chosenBtn) btn.classList.add("dim");
+    });
+  }else{
+    chosenBtn.classList.add("bad");
+    Array.from(opts.children).forEach(btn=>{
+      if(btn!==chosenBtn) btn.classList.add("dim");
+    });
+  }
+}
+
+function pickNextGoal(){
+  return { onset: randOne(ONSETS), rime: randOne(RIMES) };
+}
+
+async function nextQuestion(){
+  if(qIndex>=TOTAL_Q){
+    showResult();
+    btnReplay.disabled=true;
+    return;
+  }
+
+  locked=false;
+  msg.textContent="";
+
+  goal = pickNextGoal();
+  const options = genOptions(goal);
+
+  opts.innerHTML="";
+  options.forEach(pair=>{
+    const b = buildOptionEl(pair);
+    b.onclick = async ()=>{
+      if(locked) return;
+      locked=true;
+
+      // 先播一次題目音節（穩定：點了就再聽一次）
+      // 但避免「點錯就被音訊打斷」：先結束視覺回饋再播
+      const ok = !!pair._ok;
+      applyFeedback(b, ok);
+
+      if(ok){
+        msg.textContent="✅ 答對";
+      }else{
+        msg.textContent="❌ 再聽清楚";
+      }
+
+      // 統一用同一段題目音節回饋（不是播選項）
+      await sleep(80);
+      await playSyllable(goal.onset, goal.rime);
+
+      // 提交本題結果（每題一次、可預期）
+      commitAnswer(ok);
+      await sleep(140);
+      nextQuestion();
+    };
+    opts.appendChild(b);
+  });
+
+  // 題目開始先播一次
+  await sleep(80);
+  await playSyllable(goal.onset, goal.rime);
+}
+
+function commitAnswer(ok){
+  setLight(qIndex, ok);
+  if(ok) correct++;
+  qIndex++;
+}
+
+function start(){
+  running=true;
+  qIndex=0;
+  correct=0;
+  goal=null;
+  locked=false;
+
+  main.style.display="block";
+  resultCard.style.display="none";
+
+  btnReplay.disabled=false;
+  btnReset.style.display="inline-flex";
+
+  renderLights();
+  nextQuestion();
+}
+
+/** ====== EVENTS ====== **/
+btnStart.onclick = start;
+btnReset.onclick = start;
+btnRestart.onclick = start;
+
+btnReplay.onclick = ()=>{
+  if(!running || !goal) return;
+  playSyllable(goal.onset, goal.rime);
+};
+
+/** ====== INIT ====== **/
+(function init(){
+  setTheme(loadTheme());
+  themeBtn.onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
+  resetUI();
+})();
+</script>
+</body>
+</html>
