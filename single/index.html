@@ -91,7 +91,7 @@
   <div class="row tabs" style="justify-content:center">
     <button class="btn btnPrimary" id="tabLearn">學習</button>
     <button class="btn btnGhost" id="tabQuiz">測驗</button>
-    <button class="btn btnGhost" id="tabTeacher">設定</button>
+    <button class="btn btnGhost" id="tabTeacher">教師</button>
   </div>
 
   <div class="space"></div>
@@ -200,7 +200,7 @@
     <div class="card" style="max-width:640px;margin:0 auto">
       <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap">
         <div>
-          <div style="font-weight:1000">設定（精熟標準）</div>
+          <div style="font-weight:1000">教師設定（精熟標準）</div>
           <div class="hint">設定會儲存在此裝置</div>
         </div>
         <div class="row">
@@ -252,14 +252,16 @@
           <div class="label">紅線粗細</div>
           <input id="setTraceW" type="number" min="14" max="34" />
         </div>
-        <div style="flex:1;min-width:160px">
-          <div class="label">描寫字體大小</div>
-          <input id="setTraceFont" type="number" min="180" max="320" />
-        </div>
       </div>
     </div>
   </section>
 </div>
+
+<script>
+  // 共用音檔來源（之後 Single / Mix 都可共用）
+  // 本機測試可留空或註解，預設會用 ./audio/
+  window.AUDIO_BASE = "https://vaguemoon.github.io/bopomofo-audio/audio/";
+</script>
 
 <script>
 /** ====== STORAGE ====== **/
@@ -285,7 +287,6 @@ const DEFAULT_SETTINGS = {
   tracePassScore: 52,
   traceToleranceStroke: 38,
   traceLineWidth: 22,
-  traceFontSize: 260,
 };
 
 function clamp(n,a,b){return Math.max(a,Math.min(b,n))}
@@ -380,11 +381,21 @@ function speakAsync(text, kind, opts){
 let bopomofoAudioCache = Object.create(null);
 let currentBopomofoAudio = null;
 
+// 共用音檔基底路徑：可在載入前用 window.AUDIO_BASE 指定（例如共用音檔 Repo 的 GitHub Pages URL）
+// 預設為相對於 single/index.html 的 ./audio/
+const AUDIO_BASE = (()=>{
+  let b = (typeof window!=="undefined" && window.AUDIO_BASE) ? window.AUDIO_BASE : "./audio/";
+  b = String(b||"").trim();
+  if(!b) b = "./audio/";
+  if(!b.endsWith("/")) b += "/";
+  return b;
+})();
+
 function playBopomofoAudioByIndex(idx){
   if(idx<0 || idx>=BOPOMOFO.length) return;
 
   // 依照你 repo 結構：single/index.html + audio/ → 用相對路徑
-  const src="./audio/F"+(idx+1)+".WAV";
+  const src=AUDIO_BASE+"F"+(idx+1)+".WAV";
 
   let audio=bopomofoAudioCache[src];
   if(!audio){
@@ -461,7 +472,6 @@ settings.lockAfterPick=!!settings.lockAfterPick;
 settings.tracePassScore=clamp(+settings.tracePassScore||52,40,90);
 settings.traceToleranceStroke=clamp(+settings.traceToleranceStroke||38,24,80);
 settings.traceLineWidth=clamp(+settings.traceLineWidth||22,14,34);
-settings.traceFontSize=clamp(+settings.traceFontSize||260,180,320);
 
 let student=loadJSON(K_STUDENT,{classNo:"", seatNo:"", name:""});
 let stats=loadJSON(K_STATS,{correct:0,total:0});
@@ -526,7 +536,6 @@ const epState=document.getElementById("epState");
 const setTracePass=document.getElementById("setTracePass");
 const setTraceTol=document.getElementById("setTraceTol");
 const setTraceW=document.getElementById("setTraceW");
-const setTraceFont=document.getElementById("setTraceFont");
 
 /** ====== TABS ====== **/
 function setTab(t){
@@ -624,7 +633,7 @@ function createTracePad(canvas, getSymbol, resultEl){
     ctx.fillStyle="rgba(15,23,42,0.18)";
     ctx.textAlign="center";
     ctx.textBaseline="middle";
-    ctx.font=settings.traceFontSize+"px system-ui,-apple-system,'Noto Sans TC','Segoe UI',Roboto,Arial";
+    ctx.font="260px system-ui,-apple-system,'Noto Sans TC','Segoe UI',Roboto,Arial";
     ctx.fillText(sym, SIZE/2, SIZE/2+10);
 
     ctx.strokeStyle="rgba(15,23,42,0.12)";
@@ -672,7 +681,7 @@ function createTracePad(canvas, getSymbol, resultEl){
     m.fillStyle="#fff"; m.fillRect(0,0,SIZE,SIZE);
     m.fillStyle="#000";
     m.textAlign="center"; m.textBaseline="middle";
-    m.font=settings.traceFontSize+"px system-ui,-apple-system,'Noto Sans TC','Segoe UI',Roboto,Arial";
+    m.font="260px system-ui,-apple-system,'Noto Sans TC','Segoe UI',Roboto,Arial";
     m.fillText(sym, SIZE/2, SIZE/2+10);
     m.strokeStyle="#000";
     m.lineWidth=settings.traceToleranceStroke;
@@ -775,7 +784,6 @@ function saveSettings(){
   settings.tracePassScore=clamp(+setTracePass.value||52,40,90);
   settings.traceToleranceStroke=clamp(+setTraceTol.value||38,24,80);
   settings.traceLineWidth=clamp(+setTraceW.value||22,14,34);
-  settings.traceFontSize=clamp(+setTraceFont.value||260,180,320);
   saveJSON(K_SETTINGS, settings);
   updateTeacherMeta();
   renderQuizLights();
@@ -787,7 +795,6 @@ setLock.checked=settings.lockAfterPick;
 setTracePass.value=settings.tracePassScore;
 setTraceTol.value=settings.traceToleranceStroke;
 setTraceW.value=settings.traceLineWidth;
-setTraceFont.value=settings.traceFontSize;
 setRQ.oninput=saveSettings;
 setRA.oninput=saveSettings;
 setAutoSpeak.onchange=saveSettings;
@@ -795,7 +802,6 @@ setLock.onchange=saveSettings;
 setTracePass.oninput=saveSettings;
 setTraceTol.oninput=saveSettings;
 setTraceW.oninput=saveSettings;
-setTraceFont.oninput=saveSettings;
 
 endpointInput.value=loadEndpoint();
 endpointInput.addEventListener("input", ()=>{ saveEndpoint(endpointInput.value); updateTeacherMeta(); });
